@@ -65,24 +65,14 @@ def register():
 @login_required
 def profile(username):
     user = User.query.filter_by(username=username).first_or_404()
-    form = EditProfileForm()
+    # Prepopulate form with user's current data
+    form = EditProfileForm(obj=user)
     if form.validate_on_submit():
-        user.first_name = form.first_name.data
-        user.last_name = form.last_name.data
-        user.about_me = form.about_me.data
-        user.company = form.company.data
-        user.platoon = form.platoon.data
-        user.section = form.section.data
+        # Automatically update the user object with the submitted form data
+        form.populate_obj(user)
         db.session.commit()
-        flash("Changes have been made succesfully.")
-        redirect(url_for("profile", username=user.username))
-    elif request.method == "GET":
-        form.first_name.data = current_user.first_name
-        form.last_name.data = current_user.last_name
-        form.about_me.data = current_user.about_me
-        form.company.data = current_user.company
-        form.platoon.data = current_user.platoon
-        form.section.data = current_user.section
+        flash("Changes have been made successfully.")
+        return redirect(url_for("profile", username=user.username))
     return render_template("profile.html", title="Profile", form=form, user=user)
 
 
