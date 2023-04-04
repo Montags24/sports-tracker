@@ -1,6 +1,6 @@
 from flask import render_template, url_for, flash, redirect, request
-from app import app
-from app.forms import LoginForm
+from app import app, db
+from app.forms import LoginForm, RegistrationForm
 # Login
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, UserRoles, Role, Post
@@ -45,6 +45,20 @@ def login():
             next_page = url_for("home")
         return redirect(next_page)
     return render_template("login.html", title="Login", form=form)
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for("home"))
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = User(username=form.username.data, email=form.email.data)
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        flash("Hi {} You have successfully registered!".format(user.username))
+        return(redirect(url_for("home")))
+    return render_template("registration.html", title="Register", form=form)
 
 
 @app.route("/logout", methods=["GET", "POST"])
