@@ -1,7 +1,7 @@
 '''Stores all the form logic for web app'''
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, TextAreaField, SubmitField, EmailField, FileField, MultipleFileField
+from wtforms import StringField, PasswordField, BooleanField, TextAreaField, SubmitField, EmailField, FileField, MultipleFileField, IntegerField, SelectField
 from wtforms.validators import DataRequired, Email, EqualTo, Length, ValidationError
 from app.models import User
 
@@ -26,5 +26,12 @@ class RegistrationForm(FlaskForm):
         if User.query.filter_by(email=email.data).first():
             raise ValidationError("That email is already registed.")
 
-
-
+class EditProfileForm(FlaskForm):
+    first_name = StringField("First Name", validators=[DataRequired()])
+    last_name = StringField("Last Name", validators=[DataRequired()])
+    about_me = StringField("About Me", validators=[DataRequired(), Length(max=140)])
+    company = SelectField("Company", choices=["Normandy", "Helmand", "Basra", "Alamein"], validators=[DataRequired()])
+    platoon = StringField("Platoon", validators=[DataRequired()])
+    section = SelectField("Section", choices=["1", "2", "3", "4"], validators=[DataRequired()])
+    submit = SubmitField("Make Changes")
+    

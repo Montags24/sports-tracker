@@ -1,6 +1,6 @@
 from flask import render_template, url_for, flash, redirect, request
 from app import app, db
-from app.forms import LoginForm, RegistrationForm
+from app.forms import LoginForm, RegistrationForm, EditProfileForm
 # Login
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, UserRoles, Role, Post
@@ -34,7 +34,7 @@ def login():
     if form.validate_on_submit():
         # check for user
         user = User.query.filter_by(username=form.username.data).first()
-        if not user or user.check_password(form.password.data):
+        if not user or not user.check_password(form.password.data):
             flash("Username or password is incorrect.")
             return redirect(url_for("login"))
         # check if password matches
@@ -59,6 +59,32 @@ def register():
         flash("Hi {} You have successfully registered!".format(user.username))
         return(redirect(url_for("home")))
     return render_template("registration.html", title="Register", form=form)
+
+
+@app.route("/user/<username>", methods=["GET", "POST"])
+@login_required
+def profile(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        user.first_name = form.first_name.data
+        user.last_name = form.last_name.data
+        user.about_me = form.about_me.data
+        user.company = form.company.data
+        user.platoon = form.platoon.data
+        user.section = form.section.data
+        db.session.commit()
+        flash("Changes have been made succesfully.")
+        redirect(url_for("profile", username=user.username))
+    elif request.method == "GET":
+        form.first_name.data = current_user.first_name
+        form.last_name.data = current_user.last_name
+        form.about_me.data = current_user.about_me
+        form.company.data = current_user.company
+        form.platoon.data = current_user.platoon
+        form.section.data = current_user.section
+    return render_template("profile.html", title="Profile", form=form, user=user)
+
 
 
 @app.route("/logout", methods=["GET", "POST"])
