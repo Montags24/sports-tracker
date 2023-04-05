@@ -78,37 +78,55 @@ def profile(username):
 @app.route("/sports")
 def sports():
     sports = [{
+        "id": 1,
         "name": "Rugby",
         "description": "rugby, football game played with an oval ball by two teams of 15 players (in rugby union play) or 13 players (in rugby league play). Both rugby union and rugby league have their origins in the style of football played at Rugby",
         "img_src": "https://resources.world.rugby/worldrugby/photo/2021/02/26/de2a7c17-8ad4-4907-95af-407be6cd5ada/nonu-new-zealand-france-rwc-2015.jpg"
     },
     {
+        "id": 2,
         "name": "Hockey",
         "description": "rugby, football game played with an oval ball by two teams of 15 players (in rugby union play) or 13 players (in rugby league play). Both rugby union and rugby league have their origins in the style of football played at Rugby",
         "img_src": "https://pbs.twimg.com/media/Da01gtSXcAE6pj6.jpg:large"
     },
     {
+        "id": 3,
         "name": "Football",
         "description": "rugby, football game played with an oval ball by two teams of 15 players (in rugby union play) or 13 players (in rugby league play). Both rugby union and rugby league have their origins in the style of football played at Rugby",
         "img_src": "https://wallup.net/wp-content/uploads/2019/09/362481-england-soccer-32.jpg"
     },
     {
+        "id": 4,
         "name": "Boxing",
         "description": "rugby, football game played with an oval ball by two teams of 15 players (in rugby union play) or 13 players (in rugby league play). Both rugby union and rugby league have their origins in the style of football played at Rugby",
         "img_src": "https://www.boxingscene.com/uploads/taylor-catterall-fight%20(16).jpg"
     },
     {
+        "id": 5,
         "name": "Cricket",
         "description": "rugby, football game played with an oval ball by two teams of 15 players (in rugby union play) or 13 players (in rugby league play). Both rugby union and rugby league have their origins in the style of football played at Rugby",
         "img_src": "https://images7.alphacoders.com/642/thumb-1920-642077.jpg"
     },
     {
+        "id": 6,
         "name": "Squash",
         "description": "rugby, football game played with an oval ball by two teams of 15 players (in rugby union play) or 13 players (in rugby league play). Both rugby union and rugby league have their origins in the style of football played at Rugby",
         "img_src": "https://squashmad.com/wp-content/uploads/2016/11/5Greg.jpg"
     },
     ]
     return render_template("sports.html", sports=sports)
+
+@app.route("/sports/<id>", methods=["GET", "POST"])
+def sport_page(id):
+    sport = {
+        "id": 1,
+        "name": "Rugby",
+        "description": "rugby, football game played with an oval ball by two teams of 15 players (in rugby union play) or 13 players (in rugby league play). Both rugby union and rugby league have their origins in the style of football played at Rugby",
+        "img_src": "https://resources.world.rugby/worldrugby/photo/2021/02/26/de2a7c17-8ad4-4907-95af-407be6cd5ada/nonu-new-zealand-france-rwc-2015.jpg"
+    }
+    return render_template("sport_page.html", sport=sport)
+
+
 
 @app.route("/logout", methods=["GET", "POST"])
 def logout():
