@@ -75,6 +75,18 @@ def profile(username):
         return redirect(url_for("profile", username=user.username))
     return render_template("profile.html", title="Profile", form=form, user=user)
 
+
+@app.route('/sports/<sport_id>')
+def sport_page(sport_id):
+    sport = {
+        "id": 1,
+        "name": "Rugby",
+        "description": "rugby, football game played with an oval ball by two teams of 15 players (in rugby union play) or 13 players (in rugby league play). Both rugby union and rugby league have their origins in the style of football played at Rugby",
+        "img_src": "https://resources.world.rugby/worldrugby/photo/2021/02/26/de2a7c17-8ad4-4907-95af-407be6cd5ada/nonu-new-zealand-france-rwc-2015.jpg"
+    }
+    return render_template("sport_page.html", sport=sport)
+
+
 @app.route("/sports")
 def sports():
     sports = [{
@@ -116,15 +128,7 @@ def sports():
     ]
     return render_template("sports.html", sports=sports)
 
-@app.route("/sports/<id>", methods=["GET", "POST"])
-def sport_page(id):
-    sport = {
-        "id": 1,
-        "name": "Rugby",
-        "description": "rugby, football game played with an oval ball by two teams of 15 players (in rugby union play) or 13 players (in rugby league play). Both rugby union and rugby league have their origins in the style of football played at Rugby",
-        "img_src": "https://resources.world.rugby/worldrugby/photo/2021/02/26/de2a7c17-8ad4-4907-95af-407be6cd5ada/nonu-new-zealand-france-rwc-2015.jpg"
-    }
-    return render_template("sport_page.html", sport=sport)
+
 
 
 
