@@ -53,6 +53,7 @@ class UserRoles(db.Model):
     user_id = db.Column(db.Integer(), db.ForeignKey('users.id', ondelete='CASCADE'))
     role_id = db.Column(db.Integer(), db.ForeignKey('roles.id', ondelete='CASCADE'))
 
+
 class Post(db.Model):
     __tablename__ = "posts"
 
@@ -60,6 +61,23 @@ class Post(db.Model):
     body = db.Column(db.String(140))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+
+
+class Sport(db.Model):
+    __tablename__ = "sports"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(32))
+    description = db.Column(db.String(140))
+    sport_oic = db.Column(db.String(32))
+    sport_oic_email = db.Column(db.String(64))
+    img_src = db.Column(db.String(256))
+    capacity = db.Column(db.Integer())
+    location = db.Column(db.String(64))
+    timing = db.Column(db.String(32))
+
+    def __repr__(self):
+        return "<Sport {}>".format(self.name)
 
 
 # Keep track of logged in user

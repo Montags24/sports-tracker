@@ -2,19 +2,96 @@
 
 {% block content %}
 <div class="container">
-    <div class="container my-5">
-
+    <div class="container my-3">
         <!-- Jumbotron -->
         <div class="bg-image p-5 text-center shadow-1-strong rounded mb-5 text-white" 
              style="background-image: url('{{ sport.img_src }}');">
-          <h1 class="mb-3 h2">{{ sport.name }}</h1>
-      
+          <h1 class="mb-3 h2">{{ sport.name.capitalize() }}</h1>
           <p>{{ sport.description }}</p>
-      
         </div>
         <!-- Jumbotron -->
-      
       </div>
+      <!-- Tabs -->
+
+      <!-- Tabs navs -->
+    <ul class="nav nav-tabs mb-3" id="ex-with-icons" role="tablist">
+        <li class="nav-item" role="presentation">
+        <a class="nav-link active" id="ex-with-icons-tab-1" data-mdb-toggle="tab" href="#ex-with-icons-tabs-1" role="tab"
+            aria-controls="ex-with-icons-tabs-1" aria-selected="true"><i class="fas fa-images fa-fw me-2"></i></i>Gallery</a>
+        </li>
+        {% if current_user.is_authenticated %}
+        <li class="nav-item" role="presentation">
+        <a class="nav-link" id="ex-with-icons-tab-2" data-mdb-toggle="tab" href="#ex-with-icons-tabs-2" role="tab"
+            aria-controls="ex-with-icons-tabs-2" aria-selected="false"><i class="fas fa-info fa-fw me-2"></i></i>Information</a>
+        </li>
+        <li class="nav-item" role="presentation">
+        <a class="nav-link" id="ex-with-icons-tab-3" data-mdb-toggle="tab" href="#ex-with-icons-tabs-3" role="tab"
+            aria-controls="ex-with-icons-tabs-3" aria-selected="false"><i class="fas fa-cogs fa-fw me-2"></i>Edit Page</a>
+        </li>
+        {% endif %}
+    </ul>
+    <!-- Tabs navs -->
+    
+    <!-- Tabs content -->
+    <div class="tab-content" id="ex-with-icons-content">
+        <div class="tab-pane fade show active" id="ex-with-icons-tabs-1" role="tabpanel" aria-labelledby="ex-with-icons-tab-1">
+        Tab 1 content
+        </div>
+        <div class="tab-pane fade" id="ex-with-icons-tabs-2" role="tabpanel" aria-labelledby="ex-with-icons-tab-2">
+        Tab 2 content
+        </div>
+        <div class="tab-pane fade" id="ex-with-icons-tabs-3" role="tabpanel" aria-labelledby="ex-with-icons-tab-3">
+        <form action="" method="POST">
+            {{ form.hidden_tag() }}
+
+            {{ form.description.label(class="form-label") }}
+            {{ form.description(class="form-control") }}
+            {% for error in form.description.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+            <br>
+            {{ form.sport_oic.label(class="form-label") }}
+            {{ form.sport_oic(class="form-control") }}
+            {% for error in form.sport_oic.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+            <br>
+            {{ form.sport_oic_email.label(class="form-label") }}
+            {{ form.sport_oic_email(class="form-control") }}
+            {% for error in form.sport_oic_email.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+            <br>
+            {{ form.location.label(class="form-label") }}
+            {{ form.location(class="form-control") }}
+            {% for error in form.location.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+            <br>
+            {{ form.timing.label(class="form-label") }}
+            {{ form.timing(class="form-control") }}
+            {% for error in form.timing.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+            <br>
+            {{ form.capacity.label(class="form-label") }}
+            {{ form.capacity(class="form-control") }}
+            {% for error in form.capacity.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+            <br>
+            {{ form.img_src.label(class="form-label") }}
+            {{ form.img_src(class="form-control") }}
+            {% for error in form.img_src.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+            <br>
+            {{ form.submit(class="btn btn-dark mb-5") }}
+        </form>
+        
+        </div>
+    </div>
+  <!-- Tabs content -->
 </div>
 
 {% endblock %}

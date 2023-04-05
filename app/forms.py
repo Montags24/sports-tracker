@@ -35,3 +35,12 @@ class EditProfileForm(FlaskForm):
     section = SelectField("Section", choices=["1", "2", "3", "4"], validators=[DataRequired()])
     submit = SubmitField("Make Changes")
     
+class EditSportPageForm(FlaskForm):
+    description = TextAreaField("Sport Description", validators=[DataRequired()])
+    sport_oic = StringField("Sport OIC", validators=[DataRequired()])
+    sport_oic_email = EmailField("Sport OIC email", validators=[DataRequired(), Email()])
+    location = StringField("Location", validators=[DataRequired()])
+    timing = StringField("Timing", validators=[DataRequired()])
+    capacity = IntegerField("Capacity", validators=[DataRequired()])
+    img_src = StringField("Header Image Source", validators=[DataRequired()])
+    submit = SubmitField("Make Changes")
