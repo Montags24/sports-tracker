@@ -1,0 +1,4 @@
+Add sports page - will contain a list of all the sports as cards
+Add sports/<sport> page
+User roles - staff, sports_oic, admin
+Add user/section

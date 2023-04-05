@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>An unexpected error has occured.</h1>
+    <p>The administrator has been notified.</p>
+    <a href="{{ url_for('home') }}"><button type="button" class="btn btn-dark">Back</button></a> 
+</div>
+{% endblock %}
