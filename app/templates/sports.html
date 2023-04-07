@@ -9,15 +9,15 @@
             <div class="col-md-3">
                 <div class="card mx-2 my-2">
                     <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-                        <img src="{{ sport.img_src }}" class="img-fluid" style="width:100%;height:15vw;object-fit:cover;"/>
+                        <img src="{{ sport.img_src }}" class="img-fluid" style="width:100%;height:20vw;object-fit:cover;"/>
                         <a href="{{ url_for('sport_page', name=sport.name) }}">
                             <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
                         </a>
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title">{{ sport.name }}</h5>
+                        <h5 class="card-title">{{ sport.name.capitalize() }}</h5>
                         <p class="card-text">{{ sport.description }}</p>
-                        <a href="#!" class="btn btn-primary">Button</a>
+                        <a href="{{ url_for('sport_page', name=sport.name) }}" class="btn btn-primary">More</a>
                     </div>
                 </div>
             </div>

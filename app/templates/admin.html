@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="container my-3">
+        <!-- Jumbotron -->
+        <div class="bg-image p-5 text-center shadow-1-strong rounded mb-5 text-white" 
+             style="background-image: url('https://www.paradata.org.uk/sites/default/files/styles/modal/public/pictures/7aaremecampbastion.jpg');">
+          <h1 class="mb-3 h2">Admin</h1>
+        </div>
+        <!-- Jumbotron -->
+    </div>
+      <!-- Tabs -->
+      
+      <!-- Tabs navs -->
+    <ul class="nav nav-tabs mb-3" id="ex-with-icons" role="tablist">
+        <li class="nav-item" role="presentation">
+        <a class="nav-link active" id="ex-with-icons-tab-1" data-mdb-toggle="tab" href="#ex-with-icons-tabs-1" role="tab"
+            aria-controls="ex-with-icons-tabs-1" aria-selected="true"><i class="fas fa-images fa-fw me-2"></i></i>Admin</a>
+        </li>
+        <li class="nav-item" role="presentation">
+        <a class="nav-link" id="ex-with-icons-tab-2" data-mdb-toggle="tab" href="#ex-with-icons-tabs-2" role="tab"
+            aria-controls="ex-with-icons-tabs-2" aria-selected="false"><i class="fas fa-info fa-fw me-2"></i></i>Add/Remove User Roles</a>
+        </li>
+        <li class="nav-item" role="presentation">
+        <a class="nav-link" id="ex-with-icons-tab-3" data-mdb-toggle="tab" href="#ex-with-icons-tabs-3" role="tab"
+            aria-controls="ex-with-icons-tabs-3" aria-selected="false"><i class="fas fa-cogs fa-fw me-2"></i>Data Analysis</a>
+        </li>
+    </ul>
+    <!-- Tabs navs -->
+    
+    <!-- Tabs content -->
+    <div class="tab-content" id="ex-with-icons-content">
+        <div class="tab-pane fade show active" id="ex-with-icons-tabs-1" role="tabpanel" aria-labelledby="ex-with-icons-tab-1">
+
+            <div class="container">
+                <div class="card text-center border border-primary shadow-0 col-md-4 col-sm-10 col-xs-10">
+                    <div class="card-header">User Roles:</div>
+                    <div class="card-body">
+                        <form action="" method="POST">
+                            {{ search_form.hidden_tag() }}
+                        
+                            {{ search_form.username.label(class="form-label") }}
+                            {{ search_form.username(class="form-control") }}
+                            {% for error in search_form.username.errors %}
+                                <span style="color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                            {{ search_form.submit1(class="btn btn-dark m-3") }}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="ex-with-icons-tabs-2" role="tabpanel" aria-labelledby="ex-with-icons-tab-2">
+            <h1>Content 2</h1>
+            <div class="container">
+                <div class="card text-center border border-primary shadow-0 col-md-7 col-sm-10 col-xs-10">
+                    <div class="card-header">User Roles:</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <form action="" method="POST">
+                                    {{ search_form.hidden_tag() }}
+                                
+                                    {{ search_form.username.label(class="form-label") }}
+                                    {{ search_form.username(class="form-control") }}
+                                    {% for error in search_form.username.errors %}
+                                        <span style="color: red;">[{{ error }}]</span>
+                                    {% endfor %}
+                                    {{ search_form.submit1(class="btn btn-dark m-3") }}
+                                </form>
+                            </div>
+                            <div class="col-md-2" style="text-align: right;">
+                                <p>First Name:</p>
+                                <p>Last Name:</p>
+                                <p>User Roles:</p>
+                            </div>
+                            <div class="col-md-2" style="text-align: left;">
+                                {% if user %}
+                                <p>{{ user.first_name }}</p>
+                                <p>{{ user.last_name }}</p>
+                                {% for role in user.roles %}
+                                <p>{{ role.name.capitalize() }}</p>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="col-md-3">
+                                <p>Current Roles:</p>
+                                <form action="" method="POST">
+                                    {{ roles_form.hidden_tag() }}
+
+                                    {{ roles_form.staff() }}
+                                    {{ roles_form.staff.label(class="form-label")}}
+                                    <br>
+                                    {{ roles_form.sport_oic() }}
+                                    {{ roles_form.sport_oic.label(class="form-label")}}
+                                    <br>
+                                    {{ roles_form.admin() }}
+                                    {{ roles_form.admin.label(class="form-label")}}
+                                    <br>
+                                    {{ roles_form.submit2(class="btn btn-dark m-3") }}
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <div class="tab-pane fade" id="ex-with-icons-tabs-3" role="tabpanel" aria-labelledby="ex-with-icons-tab-3">
+            <h1>Content 3</h1>
+        </div>
+    </div>
+  <!-- Tabs content -->
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+      $('a[data-mdb-toggle="tab"]').on('shown.bs.tab', function(e) {
+        localStorage.setItem('lastTab', $(e.target).attr('href'));
+      });
+  
+      var lastTab = localStorage.getItem('lastTab');
+      if (lastTab) {
+        $('a[href="' + lastTab + '"]').tab('show');
+        $('[href="' + lastTab + '"]').parent().addClass('active');
+      } else {
+        $('a[data-mdb-toggle="tab"]:first').tab('show');
+        // $('[href="' + lastTab + '"]').parent().addClass('active');
+      }
+    });
+  </script>
+
+{% endblock %}

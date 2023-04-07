@@ -30,12 +30,21 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-    def create_user_role(self, role):
-        user = User.query.filter_by(id=self.id).first()
-        role = Role.query.filter_by(name=role).first()
-        if role:
-            user.roles.append(role)
-            db.session.commit()
+    def add_roles(self, username, roles):
+        user = User.query.filter_by(username=username).first()
+        for role, bool in roles.items():
+            role = Role.query.filter_by(name=role).first()
+            user_role = UserRoles.query.filter_by(user_id=user.id, role_id=role.id).first()
+            if bool:
+                if not user_role:
+                    user_role = UserRoles(user_id=user.id, role_id=role.id)
+                    db.session.add(user_role)
+                    db.session.commit()
+            else:
+                if user_role:
+                    UserRoles.query.filter_by(user_id=user.id, role_id=role.id).delete()
+                    db.session.commit()
+
 
 class Role(db.Model):
     __tablename__ = "roles"
@@ -45,6 +54,7 @@ class Role(db.Model):
 
     def __repr__(self):
         return "<Role {}>".format(self.name)
+
 
 class UserRoles(db.Model):
     __tablename__ = "user_roles"

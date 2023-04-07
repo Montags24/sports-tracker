@@ -1,6 +1,6 @@
-from flask import render_template, url_for, flash, redirect, request
+from flask import render_template, url_for, flash, redirect, request, session
 from app import app, db
-from app.forms import LoginForm, RegistrationForm, EditProfileForm, EditSportPageForm
+from app.forms import LoginForm, RegistrationForm, EditProfileForm, EditSportPageForm, SearchUserForm, EditUserRolesForm
 # Login
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, UserRoles, Role, Post, Sport
@@ -10,7 +10,6 @@ from werkzeug.urls import url_parse
 
 @app.route("/")
 @app.route("/home")
-@login_required
 def home():
     posts = [{
         "title": "Squash Mens win 3-1",
@@ -24,7 +23,9 @@ def home():
          }]
     return render_template("home.html", title="Home Page", posts=posts)
 
-
+# ------------------------------------------ #
+# ------------- Authentication ------------- #
+# ------------------------------------------ #
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
@@ -46,6 +47,12 @@ def login():
     return render_template("login.html", title="Login", form=form)
 
 
+@app.route("/logout", methods=["GET", "POST"])
+def logout():
+    logout_user()
+    return redirect(url_for("home"))
+
+
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if current_user.is_authenticated:
@@ -60,7 +67,9 @@ def register():
         return(redirect(url_for("home")))
     return render_template("registration.html", title="Register", form=form)
 
-
+# ------------------------------------------ #
+# ------------------ User ------------------ #
+# ------------------------------------------ #
 @app.route("/user/<username>", methods=["GET", "POST"])
 @login_required
 def profile(username):
@@ -76,6 +85,57 @@ def profile(username):
     return render_template("profile.html", title="Profile", form=form, user=user)
 
 
+@app.route("/admin", methods=["GET", "POST"])
+@login_required
+def admin():
+    search_form = SearchUserForm()
+    roles_form = EditUserRolesForm()
+
+    if search_form.validate_on_submit():
+        user = User.query.filter_by(username=search_form.username.data).first()
+
+        if user:
+            return redirect(url_for('admin_search', username=user.username))
+
+        flash('User not found. Please try again.')
+
+    if roles_form.validate_on_submit():
+        flash("Form submited")
+
+    return render_template("admin.html", title="Admin Page", search_form=search_form, roles_form=roles_form)
+
+
+@app.route("/admin/search/<username>", methods=["GET", "POST"])
+@login_required
+def admin_search(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    search_form = SearchUserForm()
+    roles_form = EditUserRolesForm()
+
+    if search_form.submit1.data and search_form.validate_on_submit():
+        flash('Search form has run')
+        user = User.query.filter_by(username=search_form.username.data).first()
+
+        if user:
+            return redirect(url_for('admin_search', username=user.username))
+
+        flash('User not found. Please try again.')
+    else:
+        search_form.username.data = user.username
+
+    if roles_form.submit2.data and roles_form.validate_on_submit():
+        roles = {
+            "staff": roles_form.staff.data,
+            "sport_oic": roles_form.sport_oic.data,
+            "admin": roles_form.admin.data}
+        user.add_roles(username=user.username, roles=roles)
+        flash("{}".format(roles))
+
+
+    return render_template("admin.html", title="Admin Page", search_form=search_form, roles_form=roles_form, user=user)
+# ------------------------------------------ #
+# ----------------- Sports ----------------- #
+# ------------------------------------------ #
 @app.route('/sports/<name>', methods=["GET", "POST"])
 def sport_page(name):
     sport = Sport.query.filter_by(name=name).first_or_404()
@@ -130,10 +190,3 @@ def sports():
     return render_template("sports.html", sports=sports)
 
 
-
-
-
-@app.route("/logout", methods=["GET", "POST"])
-def logout():
-    logout_user()
-    return redirect(url_for("home"))
