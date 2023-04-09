@@ -1,7 +1,7 @@
 '''Stores all the form logic for web app'''
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, TextAreaField, SubmitField, EmailField, FileField, MultipleFileField, IntegerField, SelectField, RadioField,FormField
+from wtforms import StringField, PasswordField, BooleanField, TextAreaField, SubmitField, EmailField, FileField, MultipleFileField, IntegerField, SelectField, URLField
 from wtforms.validators import DataRequired, Email, EqualTo, Length, ValidationError
 from app.models import User
 
@@ -54,3 +54,14 @@ class EditUserRolesForm(FlaskForm):
     sport_oic = BooleanField("Sport OIC")
     admin = BooleanField("Admin")
     submit2 = SubmitField("Edit User Roles")
+
+class AddSportForm(FlaskForm):
+    name = StringField("Name", validators=[DataRequired()])
+    description = TextAreaField("Description", validators=[DataRequired()])
+    sport_oic = StringField("Sport OIC", validators=[DataRequired()])
+    sport_oic_email = EmailField("Sport OIC email", validators=[DataRequired(), Email()])
+    location = StringField("Location")
+    timing = StringField("Timing")
+    capacity = IntegerField("Capacity")
+    img_src = URLField("Image Source", validators=[DataRequired()])
+    submit = SubmitField("Create sport")

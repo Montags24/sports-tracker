@@ -1,12 +1,14 @@
 from flask import render_template, url_for, flash, redirect, request, session
+from sqlalchemy import desc, asc
 from app import app, db
-from app.forms import LoginForm, RegistrationForm, EditProfileForm, EditSportPageForm, SearchUserForm, EditUserRolesForm
+from app.forms import LoginForm, RegistrationForm, EditProfileForm, EditSportPageForm, SearchUserForm, EditUserRolesForm, AddSportForm
 # Login
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, UserRoles, Role, Post, Sport
 # Next page
 from werkzeug.urls import url_parse
-
+# Roles
+import flask_authorization
 
 @app.route("/")
 @app.route("/home")
@@ -44,7 +46,7 @@ def login():
         if not next_page or url_parse(next_page).netloc != "":
             next_page = url_for("home")
         return redirect(next_page)
-    return render_template("login.html", title="Login", form=form)
+    return render_template("auth/login.html", title="Login", form=form)
 
 
 @app.route("/logout", methods=["GET", "POST"])
@@ -65,7 +67,7 @@ def register():
         db.session.commit()
         flash("Hi {} You have successfully registered!".format(user.username))
         return(redirect(url_for("home")))
-    return render_template("registration.html", title="Register", form=form)
+    return render_template("auth/registration.html", title="Register", form=form)
 
 # ------------------------------------------ #
 # ------------------ User ------------------ #
@@ -84,42 +86,52 @@ def profile(username):
         return redirect(url_for("profile", username=user.username))
     return render_template("profile.html", title="Profile", form=form, user=user)
 
-
+# ------------------------------------------ #
+# ------------------ Admin ----------------- #
+# ------------------------------------------ #
 @app.route("/admin", methods=["GET", "POST"])
 @login_required
+@flask_authorization.permission_required("admin")
 def admin():
-    search_form = SearchUserForm()
-    roles_form = EditUserRolesForm()
-
-    if search_form.validate_on_submit():
-        user = User.query.filter_by(username=search_form.username.data).first()
-
-        if user:
-            return redirect(url_for('admin_search', username=user.username))
-
-        flash('User not found. Please try again.')
-
-    if roles_form.validate_on_submit():
-        flash("Form submited")
-
-    return render_template("admin.html", title="Admin Page", search_form=search_form, roles_form=roles_form)
+    return render_template("admin/admin.html", title="Admin Page")
 
 
-@app.route("/admin/search/<username>", methods=["GET", "POST"])
+@app.route("/admin/edit_roles", methods=["GET", "POST"])
 @login_required
-def admin_search(username):
-    user = User.query.filter_by(username=username).first_or_404()
+@flask_authorization.permission_required("admin")
+def edit_roles(user=None):
     search_form = SearchUserForm()
     roles_form = EditUserRolesForm()
 
     if search_form.submit1.data and search_form.validate_on_submit():
-        flash('Search form has run')
         user = User.query.filter_by(username=search_form.username.data).first()
 
         if user:
             return redirect(url_for('admin_search', username=user.username))
 
         flash('User not found. Please try again.')
+        return redirect(url_for('edit_roles'))
+    elif roles_form.validate_on_submit():
+        flash('Please search for a user.')
+    return render_template("admin/edit_roles.html", title="Edit User Roles", search_form=search_form, roles_form=roles_form)
+
+
+@app.route("/admin/edit_roles/<username>", methods=["GET", "POST"])
+@login_required
+@flask_authorization.permission_required("admin")
+def admin_search(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    search_form = SearchUserForm()
+    roles_form = EditUserRolesForm()
+    add_sport_form = AddSportForm()
+    if search_form.submit1.data and search_form.validate_on_submit():
+        user = User.query.filter_by(username=search_form.username.data).first()
+
+        if user:
+            return redirect(url_for('admin_search', username=user.username))
+
+        flash('User not found. Please try again.')
+        return redirect(url_for('edit_roles'))
     else:
         search_form.username.data = user.username
 
@@ -129,10 +141,33 @@ def admin_search(username):
             "sport_oic": roles_form.sport_oic.data,
             "admin": roles_form.admin.data}
         user.add_roles(username=user.username, roles=roles)
-        flash("{}".format(roles))
+    
+    if user:
+        for role in user.roles:
+            roles_form[role.name].data = True
 
+    return render_template("admin/edit_roles.html", title="Admin Page", search_form=search_form, roles_form=roles_form, add_sport_form=add_sport_form, user=user)
 
-    return render_template("admin.html", title="Admin Page", search_form=search_form, roles_form=roles_form, user=user)
+@app.route("/admin/edit_sports", methods=["GET", "POST"])
+@login_required
+@flask_authorization.permission_required("admin")
+def edit_sports(user=None):
+    sport_form = AddSportForm()
+    if sport_form.validate_on_submit():
+        sport = Sport(name=sport_form.name.data.lower(),
+                      description=sport_form.description.data,
+                      sport_oic=sport_form.sport_oic.data,
+                      sport_oic_email=sport_form.sport_oic_email.data,
+                      img_src=sport_form.img_src.data,
+                      capacity=sport_form.capacity.data,
+                      location=sport_form.location.data,
+                      timing=sport_form.timing.data,
+                      )
+        db.session.add(sport)
+        db.session.commit()
+        flash("{} has been successfully created!".format(sport_form.name.data))
+    return render_template("admin/edit_sports.html", title="Edit User Roles", sport_form=sport_form)
+
 # ------------------------------------------ #
 # ----------------- Sports ----------------- #
 # ------------------------------------------ #
@@ -150,43 +185,7 @@ def sport_page(name):
 
 @app.route("/sports")
 def sports():
-    sports = [{
-        "id": 1,
-        "name": "rugby",
-        "description": "rugby, football game played with an oval ball by two teams of 15 players (in rugby union play) or 13 players (in rugby league play). Both rugby union and rugby league have their origins in the style of football played at Rugby",
-        "img_src": "https://resources.world.rugby/worldrugby/photo/2021/02/26/de2a7c17-8ad4-4907-95af-407be6cd5ada/nonu-new-zealand-france-rwc-2015.jpg"
-    },
-    {
-        "id": 2,
-        "name": "hockey",
-        "description": "rugby, football game played with an oval ball by two teams of 15 players (in rugby union play) or 13 players (in rugby league play). Both rugby union and rugby league have their origins in the style of football played at Rugby",
-        "img_src": "https://pbs.twimg.com/media/Da01gtSXcAE6pj6.jpg:large"
-    },
-    {
-        "id": 3,
-        "name": "football",
-        "description": "rugby, football game played with an oval ball by two teams of 15 players (in rugby union play) or 13 players (in rugby league play). Both rugby union and rugby league have their origins in the style of football played at Rugby",
-        "img_src": "https://wallup.net/wp-content/uploads/2019/09/362481-england-soccer-32.jpg"
-    },
-    {
-        "id": 4,
-        "name": "boxing",
-        "description": "rugby, football game played with an oval ball by two teams of 15 players (in rugby union play) or 13 players (in rugby league play). Both rugby union and rugby league have their origins in the style of football played at Rugby",
-        "img_src": "https://www.boxingscene.com/uploads/taylor-catterall-fight%20(16).jpg"
-    },
-    {
-        "id": 5,
-        "name": "cricket",
-        "description": "rugby, football game played with an oval ball by two teams of 15 players (in rugby union play) or 13 players (in rugby league play). Both rugby union and rugby league have their origins in the style of football played at Rugby",
-        "img_src": "https://images7.alphacoders.com/642/thumb-1920-642077.jpg"
-    },
-    {
-        "id": 6,
-        "name": "squash",
-        "description": "rugby, football game played with an oval ball by two teams of 15 players (in rugby union play) or 13 players (in rugby league play). Both rugby union and rugby league have their origins in the style of football played at Rugby",
-        "img_src": "https://squashmad.com/wp-content/uploads/2016/11/5Greg.jpg"
-    },
-    ]
+    sports = Sport.query.order_by(Sport.name.asc()).all()
     return render_template("sports.html", sports=sports)
 
 

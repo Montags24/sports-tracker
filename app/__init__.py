@@ -9,6 +9,8 @@ from flask_login import LoginManager
 import logging
 from logging.handlers import SMTPHandler, RotatingFileHandler
 import os
+# Auth
+from flask_authorization import Authorize
 
 
 app = Flask(__name__)
@@ -20,6 +22,9 @@ migrate = Migrate(app, db)
 login = LoginManager(app)
 # Send user to login page if page requires login
 login.login_view = "login"
+# Initialize Extension
+authorize = Authorize()
+authorize.init_app(app)
 
 from app import routes, models, errors
 

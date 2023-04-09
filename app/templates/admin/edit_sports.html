@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}    
+<div class="d-flex justify-content-center">
+    <div class="card text-center border border-primary shadow-0 col-md-4 col-sm-10 col-xs-10">
+        <div class="card-header">Sports:</div>
+        <div class="card-body">
+            <div class="row justify-content-center">
+                <div class="col-md-10">
+                    <form action="" method="POST">
+                        {{ sport_form.hidden_tag() }}
+                    
+                        {{ sport_form.name.label(class="form-label") }}
+                        {{ sport_form.name(class="form-control") }}
+                        {% for error in sport_form.name.errors %}
+                            <span style="color: red;">[{{ error }}]</span>
+                        {% endfor %}
+                        <br>
+                        {{ sport_form.description.label(class="form-label") }}
+                        {{ sport_form.description(class="form-control") }}
+                        {% for error in sport_form.description.errors %}
+                            <span style="color: red;">[{{ error }}]</span>
+                        {% endfor %}
+                        <br>
+                        {{ sport_form.sport_oic.label(class="form-label") }}
+                        {{ sport_form.sport_oic(class="form-control") }}
+                        {% for error in sport_form.sport_oic.errors %}
+                            <span style="color: red;">[{{ error }}]</span>
+                        {% endfor %}
+                        <br>
+                        {{ sport_form.sport_oic_email.label(class="form-label") }}
+                        {{ sport_form.sport_oic_email(class="form-control") }}
+                        {% for error in sport_form.sport_oic_email.errors %}
+                            <span style="color: red;">[{{ error }}]</span>
+                        {% endfor %}
+                        <br>
+                        {{ sport_form.location.label(class="form-label") }}
+                        {{ sport_form.location(class="form-control") }}
+                        {% for error in sport_form.location.errors %}
+                            <span style="color: red;">[{{ error }}]</span>
+                        {% endfor %}
+                        <br>
+                        {{ sport_form.timing.label(class="form-label") }}
+                        {{ sport_form.timing(class="form-control") }}
+                        {% for error in sport_form.timing.errors %}
+                            <span style="color: red;">[{{ error }}]</span>
+                        {% endfor %}
+                        <br>
+                        {{ sport_form.capacity.label(class="form-label") }}
+                        {{ sport_form.capacity(class="form-control") }}
+                        {% for error in sport_form.capacity.errors %}
+                            <span style="color: red;">[{{ error }}]</span>
+                        {% endfor %}
+                        <br>
+                        {{ sport_form.img_src.label(class="form-label") }}
+                        {{ sport_form.img_src(class="form-control") }}
+                        {% for error in sport_form.img_src.errors %}
+                            <span style="color: red;">[{{ error }}]</span>
+                        {% endfor %}
+                        <br>
+                        {{ sport_form.submit(class="btn btn-dark m-3") }}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

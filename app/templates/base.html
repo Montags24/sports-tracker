@@ -23,14 +23,27 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap"
     />
+    <!-- Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+
+
     <!-- MDB -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/mdb.rtl.min.css') }}" />
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+
   </head>
   <body>
     <!-- Start your project here-->
+    {% if request.path.startswith('/admin') %}
+    {% include "admin/admin_navbar.html" %}
+    {% else %}
     {% include "navbar.html" %}
+    {% endif %}
 
-    <div class="container mt-3">
+    <div class="container">
       {% with messages = get_flashed_messages() %}
       {% if messages %}
         {% for message in messages %}

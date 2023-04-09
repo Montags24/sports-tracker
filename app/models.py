@@ -44,6 +44,9 @@ class User(UserMixin, db.Model):
                 if user_role:
                     UserRoles.query.filter_by(user_id=user.id, role_id=role.id).delete()
                     db.session.commit()
+    
+    def get_permissions(self):
+        return [role.name for role in self.roles]
 
 
 class Role(db.Model):

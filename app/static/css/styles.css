@@ -1,0 +1,28 @@
+.gradient-custom {
+    /* fallback for old browsers */
+    background: #111dcb;
+    
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to right, rgb(15, 8, 107), rgb(214, 218, 17), rgb(190, 18, 18));
+    
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to right, rgb(15, 8, 107), rgb(214, 218, 17), rgb(190, 18, 18))
+    }
+
+.carousel-caption {
+    bottom: 40%;
+}
+
+.carousel-item {
+    max-height: 35rem;
+    background-color: #000000;
+}
+.carousel-item img {
+    opacity: 0.6;
+}
+
+.sports-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 4vh;
+    /* font-weight: bold; */
+}
