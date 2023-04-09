@@ -1,56 +1,108 @@
 {% extends "base.html" %}
 
-{% block content %}    
-<div class="d-flex justify-content-center">
-    <div class="card text-center border border-primary shadow-0 col-md-7 col-sm-10 col-xs-10">
-        <div class="card-header">User Roles:</div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-3">
-                    <form action="" method="POST">
-                        {{ search_form.hidden_tag() }}
+{% block content %} 
+<div class="section">
+    <div class="d-flex justify-content-center">
+        <div class="card text-center border border-primary shadow-0 col-md-7 col-sm-10 col-xs-10">
+            <div class="card-header">User Roles:</div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 col-sm-12">
+                        <form action="" method="POST">
+                            {{ search_form.hidden_tag() }}
+                        
+                            <strong>{{ search_form.username.label(class="form-label") }}</strong>
+                            {{ search_form.username(class="form-control") }}
+                            {% for error in search_form.username.errors %}
+                                <span style="color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                            {{ search_form.submit1(class="btn btn-dark m-3") }}
+                        </form>
+                    </div>
+                        <div class="col-md-4 col-sm-5 col-xs-5" style="text-align: center;">
+                            <p><strong>First Name:</strong> {{ user.first_name }}</p>
+                            <p><strong>Last Name:</strong> {{ user.last_name }}</p>
+                            <p><strong>User Roles:</strong> {% for role in user.roles %}<p>{{ role.name.capitalize() }}</p>{% endfor %}</p>
+                        </div>
                     
-                        {{ search_form.username.label(class="form-label") }}
-                        {{ search_form.username(class="form-control") }}
-                        {% for error in search_form.username.errors %}
-                            <span style="color: red;">[{{ error }}]</span>
-                        {% endfor %}
-                        {{ search_form.submit1(class="btn btn-dark m-3") }}
-                    </form>
-                </div>
-                <div class="col-md-2" style="text-align: center;">
-                    <p>First Name:</p>
-                    <p>Last Name:</p>
-                    <p>User Roles:</p>
-                </div>
-                <div class="col-md-2" style="text-align: left;">
-                    {% if user %}
-                    <p>{{ user.first_name }}</p>
-                    <p>{{ user.last_name }}</p>
-                    {% for role in user.roles %}
-                    <p>{{ role.name.capitalize() }}</p>
-                    {% endfor %}
-                    {% endif %}
-                </div>
-                <div class="col-md-3">
-                    <p>Current Roles:</p>
-                    <form action="" method="POST">
-                        {{ roles_form.hidden_tag() }}
-
-                        {{ roles_form.staff() }}
-                        {{ roles_form.staff.label(class="form-label")}}
-                        <br>
-                        {{ roles_form.sport_oic() }}
-                        {{ roles_form.sport_oic.label(class="form-label")}}
-                        <br>
-                        {{ roles_form.admin() }}
-                        {{ roles_form.admin.label(class="form-label")}}
-                        <br>
-                        {{ roles_form.submit2(class="btn btn-dark m-3") }}
-                    </form>
+                    <div class="col-md-4 col-sm-12">
+                        <p><strong>Current Roles:</strong></p>
+                        <form action="" method="POST">
+                            {{ roles_form.hidden_tag() }}
+    
+                            {{ roles_form.staff() }}
+                            {{ roles_form.staff.label(class="form-label")}}
+                            <br>
+                            {{ roles_form.sport_oic() }}
+                            {{ roles_form.sport_oic.label(class="form-label")}}
+                            <br>
+                            {{ roles_form.admin() }}
+                            {{ roles_form.admin.label(class="form-label")}}
+                            <br>
+                            {{ roles_form.submit2(class="btn btn-dark m-3") }}
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+</div>   
+<div class="section mt-5">
+    <div class="bg-white border rounded-5">
+        <div class="w-100 p-4 table-responsive">
+            <table class="table align-middle mb-0 bg-white">
+                <thead class="bg-light">
+                  <tr>
+                    <th>Name</th>
+                    <th>Company</th>
+                    <th>Last seen</th>
+                    <th>Roles</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for user in users_with_roles %}
+                    <tr>
+                        <td>
+                        <div class="d-flex align-items-center">
+                            <img
+                                src="https://mdbootstrap.com/img/new/avatars/8.jpg"
+                                alt=""
+                                style="width: 45px; height: 45px"
+                                class="rounded-circle"
+                                />
+                            <div class="ms-3">
+                            <p class="fw-bold mb-1">{{ user.first_name + " " + user.last_name}}</p>
+                            <p class="text-muted mb-0">{{ user.email }}</p>
+                            </div>
+                        </div>
+                        </td>
+                        <td>
+                        <p class="fw-normal mb-1">{{ user.company }}</p>
+                        <p class="text-muted mb-0">{{ user.platoon }}</p>
+                        </td>
+                        <td>
+                        <span class="badge badge-success rounded-pill d-inline">Active</span>
+                        </td>
+                        
+                        <td>
+                            {% for role in user.roles %}
+                            <p class="fw-normal mb-1">{{ role.name }}</p>
+                            {% endfor %}
+                        </td>
+                        
+                        <td>
+                        <button type="button" class="btn btn-link btn-sm btn-rounded">
+                            <a href="{{ url_for('admin_search', username=user.username) }}">Edit</a>
+                        </button>
+                        </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+        </div>
+    </div>
+    
+    
 </div>
 {% endblock %}

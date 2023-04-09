@@ -1,8 +1,8 @@
-"""Initialise
+"""empty message
 
-Revision ID: 5782b443a7c4
+Revision ID: da234779816f
 Revises: 
-Create Date: 2023-04-05 08:56:58.059019
+Create Date: 2023-04-09 18:15:37.776683
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '5782b443a7c4'
+revision = 'da234779816f'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -24,6 +24,18 @@ def upgrade():
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('name')
     )
+    op.create_table('sports',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('name', sa.String(length=32), nullable=True),
+    sa.Column('description', sa.String(length=140), nullable=True),
+    sa.Column('sport_oic', sa.String(length=32), nullable=True),
+    sa.Column('sport_oic_email', sa.String(length=64), nullable=True),
+    sa.Column('img_src', sa.String(length=256), nullable=True),
+    sa.Column('capacity', sa.Integer(), nullable=True),
+    sa.Column('location', sa.String(length=64), nullable=True),
+    sa.Column('timing', sa.String(length=32), nullable=True),
+    sa.PrimaryKeyConstraint('id')
+    )
     op.create_table('users',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('username', sa.String(length=32), nullable=True),
@@ -36,6 +48,8 @@ def upgrade():
     sa.Column('platoon', sa.Integer(), nullable=True),
     sa.Column('section', sa.Integer(), nullable=True),
     sa.Column('about_me', sa.String(length=140), nullable=True),
+    sa.Column('sport_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['sport_id'], ['sports.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     with op.batch_alter_table('users', schema=None) as batch_op:
@@ -76,5 +90,6 @@ def downgrade():
         batch_op.drop_index(batch_op.f('ix_users_email'))
 
     op.drop_table('users')
+    op.drop_table('sports')
     op.drop_table('roles')
     # ### end Alembic commands ###

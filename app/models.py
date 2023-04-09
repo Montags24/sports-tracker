@@ -17,6 +17,8 @@ class User(UserMixin, db.Model):
     platoon = db.Column(db.Integer)
     section = db.Column(db.Integer)
     about_me = db.Column(db.String(140))
+    sport_id = db.Column(db.Integer, db.ForeignKey("sports.id"))
+
     # created_at = db.Column(db.DateTime, default=datetime.utcnow)
     roles = db.relationship("Role", secondary="user_roles")
     posts = db.relationship("Post", backref="author", lazy="dynamic")
@@ -47,6 +49,20 @@ class User(UserMixin, db.Model):
     
     def get_permissions(self):
         return [role.name for role in self.roles]
+    
+    def sign_up_to_sport(self, sport_name):
+        sport = Sport.query.filter_by(name=sport_name.lower()).first()
+        if sport:
+            self.sport_id = sport.id
+            db.session.commit()
+
+    def unsign_up_to_sport(self, sport_name):
+        sport = Sport.query.filter_by(name=sport_name.lower()).first()
+        if self.sport_id == sport.id:
+            self.sport_id = None
+            db.session.commit()
+
+    
 
 
 class Role(db.Model):
@@ -85,12 +101,17 @@ class Sport(db.Model):
     sport_oic = db.Column(db.String(32))
     sport_oic_email = db.Column(db.String(64))
     img_src = db.Column(db.String(256))
-    capacity = db.Column(db.Integer())
+    capacity = db.Column(db.Integer)
     location = db.Column(db.String(64))
     timing = db.Column(db.String(32))
 
     def __repr__(self):
         return "<Sport {}>".format(self.name)
+    
+    def get_user_sign_ups(self):
+        user_sign_ups = User.query.filter_by(sport_id=self.id).all()
+        return len(user_sign_ups)
+        
 
 
 # Keep track of logged in user

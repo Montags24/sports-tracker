@@ -40,7 +40,21 @@
         Tab 1 content
         </div>
         <div class="tab-pane fade" id="ex-with-icons-tabs-2" role="tabpanel" aria-labelledby="ex-with-icons-tab-2">
-        Tab 2 content
+        <p><strong>Sport's OIC:</strong> {{ sport.sport_oic}}</p>
+        <p><strong>OIC email:</strong> {{ sport.sport_oic_email}}</p>
+        <p><strong>Location:</strong> {{ sport.location}}</p>
+        <p><strong>Timing:</strong> {{ sport.timing}}</p>
+        <p><strong>Capacity:</strong> {{ sport.get_user_sign_ups() }}/{{ sport.capacity}}</p>
+        {% if current_user.is_authenticated %}
+        <a href="{{ url_for('sign_up_to_sport', name=sport.name) }}"><button type="button" class="btn btn-dark">
+            {% if current_user.sport_id == sport.id %}
+            Cancel Sign Up
+            {% else %}
+            Sign Up Now
+            {% endif %}
+        </button></a>
+        {% endif %}
+
         </div>
         <div class="tab-pane fade" id="ex-with-icons-tabs-3" role="tabpanel" aria-labelledby="ex-with-icons-tab-3">
         <form action="" method="POST">

@@ -109,54 +109,55 @@ def admin():
 @app.route("/admin/edit_roles", methods=["GET", "POST"])
 @login_required
 @flask_authorization.permission_required("admin")
-def edit_roles(user=None):
+def edit_roles():
+    # Initialise forms
     search_form = SearchUserForm()
     roles_form = EditUserRolesForm()
 
+    users_with_roles = User.query.filter(User.roles != None).all()
     if search_form.submit1.data and search_form.validate_on_submit():
         user = User.query.filter_by(username=search_form.username.data).first()
-
         if user:
             return redirect(url_for('admin_search', username=user.username))
-
         flash('User not found. Please try again.')
         return redirect(url_for('edit_roles'))
     elif roles_form.validate_on_submit():
         flash('Please search for a user.')
-    return render_template("admin/edit_roles.html", title="Edit User Roles", search_form=search_form, roles_form=roles_form)
+    return render_template("admin/edit_roles.html", title="Edit User Roles", search_form=search_form, roles_form=roles_form, users_with_roles=users_with_roles, user=None)
 
 
 @app.route("/admin/edit_roles/<username>", methods=["GET", "POST"])
 @login_required
 @flask_authorization.permission_required("admin")
 def admin_search(username):
+    # Find user in database
     user = User.query.filter_by(username=username).first_or_404()
+    # Initialise forms
     search_form = SearchUserForm()
     roles_form = EditUserRolesForm()
     add_sport_form = AddSportForm()
+    # Get list of users with roles attached
+    users_with_roles = User.query.filter(User.roles != None).all()
     if search_form.submit1.data and search_form.validate_on_submit():
         user = User.query.filter_by(username=search_form.username.data).first()
-
         if user:
             return redirect(url_for('admin_search', username=user.username))
-
         flash('User not found. Please try again.')
         return redirect(url_for('edit_roles'))
     else:
         search_form.username.data = user.username
-
+    # Update roles of user based off form
     if roles_form.submit2.data and roles_form.validate_on_submit():
         roles = {
             "staff": roles_form.staff.data,
             "sport_oic": roles_form.sport_oic.data,
             "admin": roles_form.admin.data}
         user.add_roles(username=user.username, roles=roles)
-    
+    # Prepopulate roles_form with user roles
     if user:
         for role in user.roles:
             roles_form[role.name].data = True
-
-    return render_template("admin/edit_roles.html", title="Admin Page", search_form=search_form, roles_form=roles_form, add_sport_form=add_sport_form, user=user)
+    return render_template("admin/edit_roles.html", title="Admin Page", search_form=search_form, roles_form=roles_form, add_sport_form=add_sport_form, user=user, users_with_roles=users_with_roles)
 
 @app.route("/admin/edit_sports", methods=["GET", "POST"])
 @login_required
@@ -181,6 +182,12 @@ def edit_sports(user=None):
 # ------------------------------------------ #
 # ----------------- Sports ----------------- #
 # ------------------------------------------ #
+@app.route("/sports")
+def sports():
+    sports = Sport.query.order_by(Sport.name.asc()).all()
+    return render_template("sports.html", sports=sports)
+
+
 @app.route('/sports/<name>', methods=["GET", "POST"])
 def sport_page(name):
     sport = Sport.query.filter_by(name=name).first_or_404()
@@ -193,9 +200,11 @@ def sport_page(name):
     return render_template("sport_page.html", sport=sport, form=form)
 
 
-@app.route("/sports")
-def sports():
-    sports = Sport.query.order_by(Sport.name.asc()).all()
-    return render_template("sports.html", sports=sports)
-
-
+@app.route('/sports/<name>/signup', methods=["GET", "POST"])
+def sign_up_to_sport(name):
+    sport = Sport.query.filter_by(name=name).first_or_404()
+    if current_user.sport_id == sport.id:
+        current_user.unsign_up_to_sport(sport.name)
+    else:
+        current_user.sign_up_to_sport(sport.name)
+    return redirect(url_for("sport_page", name=name))
