@@ -65,8 +65,9 @@ def register():
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
-        flash("Hi {} You have successfully registered!".format(user.username))
-        return(redirect(url_for("home")))
+        login_user(user)
+        flash("Hi {}.You have successfully registered! Please update your details below.".format(user.username))
+        return(redirect(url_for("profile", username=user.username)))
     return render_template("auth/registration.html", title="Register", form=form)
 
 # ------------------------------------------ #
@@ -77,6 +78,15 @@ def register():
 def profile(username):
     user = User.query.filter_by(username=username).first_or_404()
     # Prepopulate form with user's current data
+    user_data = {
+        "First Name": user.first_name,
+        "Last Name": user.last_name,
+        "Email": user.email,
+        "About Me": user.about_me,
+        "Company": user.company,
+        "Platoon": user.platoon,
+        "Section": user.section,
+    }
     form = EditProfileForm(obj=user)
     if form.validate_on_submit():
         # Automatically update the user object with the submitted form data
@@ -84,7 +94,7 @@ def profile(username):
         db.session.commit()
         flash("Changes have been made successfully.")
         return redirect(url_for("profile", username=user.username))
-    return render_template("profile.html", title="Profile", form=form, user=user)
+    return render_template("profile.html", title="Profile", form=form, user=user, user_data=user_data)
 
 # ------------------------------------------ #
 # ------------------ Admin ----------------- #

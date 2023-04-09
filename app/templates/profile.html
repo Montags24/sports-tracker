@@ -14,66 +14,20 @@
               <div class="col-md-6">
                 <div class="card-body">
                   <h5 class="card-title">Profile Information</h5>
+
+                  {% for key, value in user_data.items() %}
                   <div class="row mb-1">
                     <div class="col-md-3">
-                        <p class="card-text">First name:</p>
+                        <p class="card-text">{{ key }}</p>
                     </div>
-                    <div class="col-md-3">
-                        {% if user.first_name %}
-                        <p class="card-text">{{ user.first_name }}</p>
+                    <div class="col-md-4">
+                        {% if value %}
+                        <p class="card-text">{{ value }}</p>
                         {% endif %}
                     </div>
                   </div>
-                  <div class="row mb-1">
-                    <div class="col-md-3">
-                        <p class="card-text">Last name:</p>
-                    </div>
-                    <div class="col-md-3">
-                        {% if user.last_name %}
-                        <p class="card-text">{{ user.last_name }}</p>
-                        {% endif %}
-                    </div>
-                  </div>
-                  <div class="row mb-1">
-                    <div class="col-md-3">
-                        <p class="card-text">Company:</p>
-                    </div>
-                    <div class="col-md-3">
-                        {% if user.company %}
-                        <p class="card-text">{{ user.company }}</p>
-                        {% endif %}
-                    </div>
-                  </div>
-                  <div class="row mb-1">
-                    <div class="col-md-3">
-                        <p class="card-text">Platoon:</p>
-                    </div>
-                    <div class="col-md-3">
-                        {% if user.platoon %}
-                        <p class="card-text">{{ user.platoon }}</p>
-                        {% endif %}
-                    </div>
-                  </div>
-                  <div class="row mb-1">
-                    <div class="col-md-3">
-                        <p class="card-text">Section:</p>
-                    </div>
-                    <div class="col-md-3">
-                        {% if user.section %}
-                        <p class="card-text">{{ user.section }}</p>
-                        {% endif %}
-                    </div>
-                  </div>
-                  <div class="row mb-1">
-                    <div class="col-md-3">
-                        <p class="card-text">About Me:</p>
-                    </div>
-                    <div class="col-md-3">
-                        {% if user.about_me %}
-                        <p class="card-text">{{ user.about_me }}</p>
-                        {% endif %}
-                    </div>
-                  </div>
+                  {% endfor %}
+
                 </div>
               </div>
               <div class="col-md-4">
@@ -82,53 +36,63 @@
             </div>
           </div>
     </div>
-    
-
     <hr>
-    {% if current_user.username == user.username %}
-    <h3>Edit Profile</h3>
-    <form action="" method="POST">
-        {{ form.hidden_tag() }}
 
-        {{ form.first_name.label(class="form-label") }}
-        {{ form.first_name(class="form-control") }}
-        {% for error in form.first_name.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-        <br>
-        {{ form.last_name.label(class="form-label") }}
-        {{ form.last_name(class="form-control") }}
-        {% for error in form.last_name.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-        <br>
-        {{ form.about_me.label(class="form-label") }}
-        {{ form.about_me(class="form-control") }}
-        {% for error in form.about_me.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-        <br>
-        {{ form.company.label(class="form-label") }}
-        {{ form.company(class="form-select") }}
-        {% for error in form.company.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-        <br>
-        {{ form.platoon.label(class="form-label") }}
-        {{ form.platoon(class="form-control") }}
-        {% for error in form.platoon.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-        <br>
-        {{ form.section.label(class="form-label") }}
-        {{ form.section(class="form-select") }}
-        {% for error in form.section.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-        <br>
-        {{ form.submit(class="btn btn-dark mb-5") }}
-    </form>
-    {% endif %}
+    <div class="row justify-content-start">
+      <div class="col-md-3">
+        {% if current_user.username == user.username %}
+        <h3>Edit Profile</h3>
+        <form action="" method="POST">
+            {{ form.hidden_tag() }}
+    
+            {{ form.first_name.label(class="form-label") }}
+            {{ form.first_name(class="form-control") }}
+            {% for error in form.first_name.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+            <br>
+            {{ form.last_name.label(class="form-label") }}
+            {{ form.last_name(class="form-control") }}
+            {% for error in form.last_name.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+            <br>
+            {{ form.email.label(class="form-label") }}
+            {{ form.email(class="form-control") }}
+            {% for error in form.email.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+            <br>
+            {{ form.about_me.label(class="form-label") }}
+            {{ form.about_me(class="form-control") }}
+            {% for error in form.about_me.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+            <br>
+            {{ form.company.label(class="form-label") }}
+            {{ form.company(class="form-select") }}
+            {% for error in form.company.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+            <br>
+            {{ form.platoon.label(class="form-label") }}
+            {{ form.platoon(class="form-control") }}
+            {% for error in form.platoon.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+            <br>
+            {{ form.section.label(class="form-label") }}
+            {{ form.section(class="form-select") }}
+            {% for error in form.section.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+            <br>
+            {{ form.submit(class="btn btn-dark mb-5") }}
+        </form>
+        {% endif %}
+      </div>
+    </div>
+    
 
 </div>
 
