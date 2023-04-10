@@ -2,48 +2,99 @@
 
 {% block content %}
 <div class="container">
-    <section class="vh-100 gradient-custom">
-        <div class="container py-5 h-100">
-          <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-              <div class="card bg-dark text-white" style="border-radius: 1rem;">
-                <div class="card-body p-5 text-center">
-                  <div class="mb-md-5 mt-md-4 pb-5">
-                    <h2 class="fw-bold mb-2 text-uppercase">Register</h2>
-                    <form action="" method="POST">
-                        {{ form.hidden_tag() }}
-                        {{ form.username.label(class="form-label text-white") }}
-                        {{ form.username(class="form-control") }}
-                        {% for error in form.username.errors %}
-                            <span style="color: red;">[{{ error }}]</span>
-                        {% endfor %}
-                        <br>
-                        {{ form.email.label(class="form-label text-white") }}
-                        {{ form.email(class="form-control") }}
-                        {% for error in form.email.errors %}
-                            <span style="color: red;">[{{ error }}]</span>
-                        {% endfor %}
-                        <br>
-                        {{ form.password.label(class="form-label text-white") }}
-                        {{ form.password(class="form-control") }}
-                        {% for error in form.password.errors %}
-                            <span style="color: red;">[{{ error }}]</span>
-                        {% endfor %}
-                        <br>
-                        {{ form.password2.label(class="form-label text-white") }}
-                        {{ form.password2(class="form-control") }}
-                        {% for error in form.password2.errors %}
-                            <span style="color: red;">[{{ error }}]</span>
-                        {% endfor %}
-                        <br>
-                        {{ form.submit(class="btn btn-light") }} 
-                    </form>
+  <section class="vh-100 gradient-custom">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+          <div class="card bg-dark text-white" style="border-radius: 1rem;">
+            <div class="card-body p-5">
+              <div class="mb-md-5 mt-md-4 pb-5">
+                <h2 class="fw-bold mb-2 text-uppercase" style="text-align: center;">Register</h2>
+                <form action="" method="POST">
+                  {{ form.hidden_tag() }}
+                  <div class="row mt-2">
+                    <div class="col-md-12">
+                      <label class="labels">{{ form.username.label }}</label>
+                      {{ form.username(class="form-control") }}
+                      {% for error in form.username.errors %}
+                      <span style="color: red;">[{{ error }}]</span>
+                      {% endfor %}
+                    </div>
                   </div>
-                </div>
+                  <div class="row mt-2">
+                    <div class="col-md-6">
+                      <label class="labels">{{ form.first_name.label }}</label>
+                      {{ form.first_name(class="form-control") }}
+                      {% for error in form.first_name.errors %}
+                      <span style="color: red;">[{{ error }}]</span>
+                      {% endfor %}
+                    </div>
+                    <div class="col-md-6">
+                      <label class="labels">{{ form.last_name.label }}</label>
+                      {{ form.last_name(class="form-control") }}
+                      {% for error in form.last_name.errors %}
+                      <span style="color: red;">[{{ error }}]</span>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  <div class="row mt-3">
+                    <div class="col-md-12">
+                      <label class="labels">{{ form.email.label }}</label>
+                      {{ form.email(class="form-control") }}
+                      {% for error in form.email.errors %}
+                      <span style="color: red;">[{{ error }}]</span>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  <div class="row mt-3">
+                    <div class="col-md-4">
+                      <label class="labels">{{ form.company.label }}</label>
+                      {{ form.company(class="form-select") }}
+                      {% for error in form.company.errors %}
+                      <span style="color: red;">[{{ error }}]</span>
+                      {% endfor %}
+                    </div>
+                    <div class="col-md-4">
+                      <label class="labels">{{ form.platoon.label }}</label>
+                      {{ form.platoon(class="form-select") }}
+                      {% for error in form.platoon.errors %}
+                      <span style="color: red;">[{{ error }}]</span>
+                      {% endfor %}
+                    </div>
+                    <div class="col-md-4">
+                      <label class="labels">{{ form.section.label }}</label>
+                      {{ form.section(class="form-select") }}
+                      {% for error in form.section.errors %}
+                      <span style="color: red;">[{{ error }}]</span>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  <div class="row mt-2">
+                    <div class="col-md-6">
+                      <label class="labels">{{ form.password.label }}</label>
+                      {{ form.password(class="form-control") }}
+                      {% for error in form.password.errors %}
+                      <span style="color: red;">[{{ error }}]</span>
+                      {% endfor %}
+                    </div>
+                    <div class="col-md-6">
+                      <label class="labels">{{ form.password2.label }}</label>
+                      {{ form.password2(class="form-control") }}
+                      {% for error in form.password2.errors %}
+                      <span style="color: red;">[{{ error }}]</span>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  <div class="mt-5 text-center">
+                    {{ form.submit(class="btn btn-light mb-5") }}
+                  </div>
+                </form>
               </div>
             </div>
           </div>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 </div>
 {% endblock %}

@@ -72,23 +72,25 @@
                                 class="rounded-circle"
                                 />
                             <div class="ms-3">
-                            <p class="fw-bold mb-1">{{ user.first_name + " " + user.last_name}}</p>
-                            <p class="text-muted mb-0">{{ user.email }}</p>
+                                <p class="fw-bold mb-1">{{ user.first_name + " " + user.last_name}}</p>
+                                <p class="text-muted mb-0">{{ user.email }}</p>
                             </div>
                         </div>
                         </td>
                         <td>
-                        <p class="fw-normal mb-1">{{ user.company }}</p>
-                        <p class="text-muted mb-0">{{ user.platoon }}</p>
-                        </td>
-                        <td>
-                        <span class="badge badge-success rounded-pill d-inline">Active</span>
+                            <p class="fw-normal mb-1">{{ user.company }}</p>
+                            <p class="text-muted mb-0">{{ user.platoon }} Platoon</p>
+                            </td>
+                            <td>
+                            <span class="badge badge-success rounded-pill d-inline">Active</span>
                         </td>
                         
                         <td>
-                            {% for role in user.roles %}
-                            <p class="fw-normal mb-1">{{ role.name }}</p>
-                            {% endfor %}
+                            <ul style="max-width: 30px;">
+                                {% for role in user.roles %}
+                                <li>{{ role.name }}</li>
+                                {% endfor %}
+                            </ul>
                         </td>
                         
                         <td>
@@ -102,7 +104,5 @@
               </table>
         </div>
     </div>
-    
-    
 </div>
 {% endblock %}

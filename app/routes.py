@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect, request, session
 from sqlalchemy import desc, asc
 from app import app, db
-from app.forms import LoginForm, RegistrationForm, EditProfileForm, EditSportPageForm, SearchUserForm, EditUserRolesForm, AddSportForm
+from app.forms import LoginForm, RegistrationForm, EditProfileForm, EditSportPageForm, SearchUserForm, EditUserRolesForm, AddSportForm, TrackStudentForm
 # Login
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, UserRoles, Role, Post, Sport
@@ -61,7 +61,13 @@ def register():
         return redirect(url_for("home"))
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User(username=form.username.data, email=form.email.data)
+        user = User(username=form.username.data,
+                    email=form.email.data,
+                    first_name=form.first_name.data,
+                    last_name=form.last_name.data,
+                    company=form.company.data,
+                    platoon=form.platoon.data,
+                    section=form.section.data)
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
@@ -82,7 +88,6 @@ def profile(username):
         "First Name": user.first_name,
         "Last Name": user.last_name,
         "Email": user.email,
-        "About Me": user.about_me,
         "Company": user.company,
         "Platoon": user.platoon,
         "Section": user.section,
@@ -101,14 +106,14 @@ def profile(username):
 # ------------------------------------------ #
 @app.route("/admin", methods=["GET", "POST"])
 @login_required
-@flask_authorization.permission_required("admin")
+@flask_authorization.permission_required(["admin"])
 def admin():
     return render_template("admin/admin.html", title="Admin Page")
 
 
 @app.route("/admin/edit_roles", methods=["GET", "POST"])
 @login_required
-@flask_authorization.permission_required("admin")
+@flask_authorization.permission_required(["admin"])
 def edit_roles():
     # Initialise forms
     search_form = SearchUserForm()
@@ -128,7 +133,7 @@ def edit_roles():
 
 @app.route("/admin/edit_roles/<username>", methods=["GET", "POST"])
 @login_required
-@flask_authorization.permission_required("admin")
+@flask_authorization.permission_required(["admin"])
 def admin_search(username):
     # Find user in database
     user = User.query.filter_by(username=username).first_or_404()
@@ -162,7 +167,7 @@ def admin_search(username):
 
 @app.route("/admin/edit_sports", methods=["GET", "POST"])
 @login_required
-@flask_authorization.permission_required("admin")
+@flask_authorization.permission_required(["admin"])
 def edit_sports(user=None):
     sport_form = AddSportForm()
     if sport_form.validate_on_submit():
@@ -179,6 +184,28 @@ def edit_sports(user=None):
         db.session.commit()
         flash("{} has been successfully created!".format(sport_form.name.data))
     return render_template("admin/edit_sports.html", title="Edit User Roles", sport_form=sport_form)
+
+
+@app.route("/track", methods=["GET", "POST"])
+@login_required
+@flask_authorization.permission_required(["admin", "sports_oic", "staff"])
+def track():
+    form = TrackStudentForm()
+    return render_template("admin/track.html", form=form)
+
+@app.route("/track_section", methods=["GET", "POST"])
+@login_required
+@flask_authorization.permission_required(["admin", "sports_oic", "staff"])
+def track_section():
+    form = TrackStudentForm()
+    if form.validate_on_submit():
+        users = User.query.filter_by(platoon=form.platoon.data, section=form.section.data).all()
+    else:
+        flash("Please try again.")
+        return redirect(url_for('track'))
+    return render_template("admin/track.html", form=form, users=users)
+
+
 
 # ------------------------------------------ #
 # ----------------- Sports ----------------- #
@@ -205,6 +232,7 @@ def sport_page(name):
 def sign_up_to_sport(name):
     sport = Sport.query.filter_by(name=name).first_or_404()
     if current_user.sport_id == sport.id:
+        flash("You are no longer signed up to {}".format(sport.name.capitalize()))
         current_user.unsign_up_to_sport(sport.name)
     else:
         flash("You are now signed up to {}".format(sport.name.capitalize()))

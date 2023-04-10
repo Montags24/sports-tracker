@@ -17,6 +17,8 @@
     max-height: 35rem;
     background-color: #000000;
 }
+
+
 .carousel-item img {
     opacity: 0.6;
 }
@@ -34,9 +36,6 @@
 .container {
     padding:0px;
 }
-
-.navbar-nav .active { text-decoration: underline; background-color: yellow; }
-
 
 @media only screen and (min-width: 1000px) {
     .sports-title {

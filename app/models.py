@@ -2,6 +2,7 @@ from app import db, login
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+from hashlib import md5
 
 class User(UserMixin, db.Model):
     __tablename__ = "users"
@@ -16,10 +17,10 @@ class User(UserMixin, db.Model):
     company = db.Column(db.String(32))
     platoon = db.Column(db.Integer)
     section = db.Column(db.Integer)
-    about_me = db.Column(db.String(140))
     sport_id = db.Column(db.Integer, db.ForeignKey("sports.id"))
+    sign_up_timestamp = db.Column(db.DateTime, index=True)
+    attended_sport = db.Column(db.Boolean, default=False)
 
-    # created_at = db.Column(db.DateTime, default=datetime.utcnow)
     roles = db.relationship("Role", secondary="user_roles")
     posts = db.relationship("Post", backref="author", lazy="dynamic")
 
@@ -31,6 +32,11 @@ class User(UserMixin, db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+    
+    def avatar(self, size):
+        digest = md5(self.email.lower().encode('utf-8')).hexdigest()
+        return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(
+            digest, size)
 
     def add_roles(self, username, roles):
         user = User.query.filter_by(username=username).first()
@@ -54,12 +60,14 @@ class User(UserMixin, db.Model):
         sport = Sport.query.filter_by(name=sport_name.lower()).first()
         if sport:
             self.sport = sport
+            self.sign_up_timestamp = datetime.now()
             db.session.commit()
 
     def unsign_up_to_sport(self, sport_name):
         sport = Sport.query.filter_by(name=sport_name.lower()).first()
         if self.sport_id == sport.id:
             self.sport_id = None
+            self.sign_up_timestamp = None
             db.session.commit()
 
 

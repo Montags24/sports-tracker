@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center mt-3">
+        <div class="col-md-5">
+            <div class="card" >
+                <div class="card-header">Search Section</div>
+                <div class="card-body">
+                    <form action="{{ url_for('track_section')}}" method="POST">
+                        {{ form.hidden_tag() }}
+                        <div class="row">
+                            <div class="col-md-4">
+                                {{ form.platoon.label(class="form-label") }}
+                                {{ form.platoon(class="form-select") }}
+                                {% for error in form.platoon.errors %}
+                                <span style="color: red;">[{{ error }}]</span>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.section.label(class="form-label") }}
+                                {{ form.section(class="form-select") }}
+                                {% for error in form.section.errors %}
+                                <span style="color: red;">[{{ error }}]</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-4">
+                                {{ form.submit(class="btn btn-dark") }}
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="section mt-5">
+        <div class="bg-white border rounded-5">
+            <div class="w-90 p-4 table-responsive">
+                <table class="table align-middle mb-0 bg-white">
+                    <thead class="bg-light">
+                        <tr>
+                            <th>Name</th>
+                            <th>Sport</th>
+                            <th>Signed up at</th>
+                            <th>Remarks</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td>
+                                <div class="d-flex">
+                                    <img src="https://mdbootstrap.com/img/new/avatars/8.jpg" alt=""
+                                        style="width: 45px; height: 45px" class="rounded-circle" />
+                                    <div class="">
+                                        <p class="fw-bold mb-1">{{ user.first_name + " " + user.last_name }}</p>
+                                        <p class="text-muted mb-0">{{ user.email }}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                {% if user.sport %}
+                                <p class="fw-normal mb-1">{{ user.sport.name.capitalize() }}</p>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if user.sign_up_timestamp %}
+                                <p class="fw-normal mb-1">{{ user.sign_up_timestamp.strftime('%Y-%m-%d %H:%M') }}</p>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <p>Remarks</p>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-link btn-sm btn-rounded">
+                                    <a href="#">Edit</a>
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

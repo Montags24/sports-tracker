@@ -13,7 +13,12 @@ class LoginForm(FlaskForm):
 
 class RegistrationForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
+    first_name = StringField("First Name", validators=[DataRequired()])
+    last_name = StringField("Last Name", validators=[DataRequired()])
     email = EmailField("Email", validators=[DataRequired(), Email()])
+    company = SelectField("Company", choices=["Normandy", "Helmand", "Basra", "Alamein"], validators=[DataRequired()])
+    platoon = SelectField("Platoon", choices=["5", "6", "7", "8", "9", "10", "11", "12", "Coy HQ"], validators=[DataRequired()])
+    section = SelectField("Section", choices=["1", "2", "3", "4", "NA"], validators=[DataRequired()])
     password = PasswordField("Password", validators=[DataRequired()])
     password2 = PasswordField("Repeat Password", validators=[DataRequired(), EqualTo("password")])
     submit = SubmitField("Submit")
@@ -30,11 +35,10 @@ class EditProfileForm(FlaskForm):
     first_name = StringField("First Name", validators=[DataRequired()])
     last_name = StringField("Last Name", validators=[DataRequired()])
     email = EmailField("Email", validators=[DataRequired(), Email()])
-    about_me = TextAreaField("About Me", validators=[DataRequired(), Length(max=140)])
     company = SelectField("Company", choices=["Normandy", "Helmand", "Basra", "Alamein"], validators=[DataRequired()])
-    platoon = StringField("Platoon", validators=[DataRequired()])
-    section = SelectField("Section", choices=["1", "2", "3", "4"], validators=[DataRequired()])
-    submit = SubmitField("Make Changes")
+    platoon = SelectField("Platoon", choices=["5", "6", "7", "8", "9", "10", "11", "12", "Coy HQ"], validators=[DataRequired()])
+    section = SelectField("Section", choices=["1", "2", "3", "4", "NA"], validators=[DataRequired()])
+    submit = SubmitField("Save Profile")
     
 class EditSportPageForm(FlaskForm):
     description = TextAreaField("Sport Description", validators=[DataRequired()])
@@ -66,3 +70,8 @@ class AddSportForm(FlaskForm):
     capacity = IntegerField("Capacity")
     img_src = URLField("Image Source", validators=[DataRequired()])
     submit = SubmitField("Create sport")
+
+class TrackStudentForm(FlaskForm):
+    platoon = SelectField("Platoon", choices=["5", "6", "7", "8", "9", "10", "11", "12"], validators=[DataRequired()])
+    section = SelectField("Section", choices=["1", "2", "3", "4"], validators=[DataRequired()])
+    submit = SubmitField("Search")

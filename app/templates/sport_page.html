@@ -2,15 +2,21 @@
 
 {% block content %}
 <div class="container">
-    <div class="container my-3">
+    <div class="container">
         <!-- Jumbotron -->
-        <div class="bg-image p-5 text-center shadow-1-strong rounded mb-5 text-white" 
-             style="background-image: url('{{ sport.img_src }}');">
-          <h1 class="mb-3 h2">{{ sport.name.capitalize() }}</h1>
-          <p>{{ sport.description }}</p>
+        <div class="text-center bg-image" style="
+            background-image: url('{{ sport.img_src }}');
+            height: 300px;
+        ">
+        <div class="mask" style="background-color: rgba(0, 0, 0, 0.6);">
+            <div class="d-flex justify-content-center align-items-center h-100">
+            <div class="text-white">
+                <h1 class="mb-3">{{ sport.name.capitalize() }}</h1>
+                <h4 class="mb-3">{{ sport.description }}</h4>
+            </div>
+            </div>
         </div>
-        <!-- Jumbotron -->
-      </div>
+        </div>
       <!-- Tabs -->
 
       <!-- Tabs navs -->
@@ -44,7 +50,7 @@
         Tab 1 content
         </div>
         <!-- Posts -->
-        <div class="tab-pane fade show active" id="ex-with-icons-tabs-4" role="tabpanel" aria-labelledby="ex-with-icons-tab-4">
+        <div class="tab-pane fade" id="ex-with-icons-tabs-4" role="tabpanel" aria-labelledby="ex-with-icons-tab-4">
             <div class="section mt-3">
                 <div class="row mt-4">
                   <div class="col-md-6">
