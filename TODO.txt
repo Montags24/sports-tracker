@@ -1,4 +1,10 @@
-Add sports page - will contain a list of all the sports as cards
-Add sports/<sport> page
-User roles - staff, sports_oic, admin
-Add user/section
+Create admin page
+- Create/Delete a sport
+- Add roles to users: Admin, Sports OIC, Staff
+- Data analytics page
+
+Create sports oic page
+- Create/edit/delete posts
+- Create/edit/delete news
+- Upload photos to gallery
+- See nominal roll of user signups

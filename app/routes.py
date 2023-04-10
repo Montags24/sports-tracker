@@ -159,6 +159,7 @@ def admin_search(username):
             roles_form[role.name].data = True
     return render_template("admin/edit_roles.html", title="Admin Page", search_form=search_form, roles_form=roles_form, add_sport_form=add_sport_form, user=user, users_with_roles=users_with_roles)
 
+
 @app.route("/admin/edit_sports", methods=["GET", "POST"])
 @login_required
 @flask_authorization.permission_required("admin")
@@ -206,5 +207,6 @@ def sign_up_to_sport(name):
     if current_user.sport_id == sport.id:
         current_user.unsign_up_to_sport(sport.name)
     else:
+        flash("You are now signed up to {}".format(sport.name.capitalize()))
         current_user.sign_up_to_sport(sport.name)
     return redirect(url_for("sport_page", name=name))

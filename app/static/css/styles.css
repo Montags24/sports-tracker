@@ -21,6 +21,10 @@
     opacity: 0.6;
 }
 
+.h1 {
+    font-family: 'Montserrat', sans-serif;
+}
+
 .sports-title {
     font-family: 'Montserrat', sans-serif;
     font-size: 4vh;
@@ -29,4 +33,17 @@
 
 .container {
     padding:0px;
+}
+
+.navbar-nav .active { text-decoration: underline; background-color: yellow; }
+
+
+@media only screen and (min-width: 1000px) {
+    .sports-title {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 4.5em;
+        line-height: 80px;
+        margin-bottom: 15px;
+        font-weight: bold;
+    }
 }

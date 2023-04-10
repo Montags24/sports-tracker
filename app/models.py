@@ -53,7 +53,7 @@ class User(UserMixin, db.Model):
     def sign_up_to_sport(self, sport_name):
         sport = Sport.query.filter_by(name=sport_name.lower()).first()
         if sport:
-            self.sport_id = sport.id
+            self.sport = sport
             db.session.commit()
 
     def unsign_up_to_sport(self, sport_name):
@@ -61,8 +61,6 @@ class User(UserMixin, db.Model):
         if self.sport_id == sport.id:
             self.sport_id = None
             db.session.commit()
-
-    
 
 
 class Role(db.Model):
@@ -104,6 +102,7 @@ class Sport(db.Model):
     capacity = db.Column(db.Integer)
     location = db.Column(db.String(64))
     timing = db.Column(db.String(32))
+    users = db.relationship("User", backref="sport")
 
     def __repr__(self):
         return "<Sport {}>".format(self.name)
