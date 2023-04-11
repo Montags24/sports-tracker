@@ -203,7 +203,7 @@ def track_section():
     else:
         flash("Please try again.")
         return redirect(url_for('track'))
-    return render_template("admin/track.html", form=form, users=users)
+    return render_template("admin/track.html", form=form, users=users, sports=sports)
 
 
 
@@ -222,14 +222,17 @@ def sport_page(name):
     form = EditSportPageForm(obj=sport)
     users = User.query.filter_by(sport_id=sport.id).all()
     attendance_form = StudentAttendanceForm()
-    if form.validate_on_submit():
+    if form.submit.data and form.validate_on_submit():
         form.populate_obj(sport)
         db.session.commit()
         flash("Changes have been made successfully.")
         return redirect(url_for("sport_page", name=name))
-    if attendance_form.validate_on_submit():
+    # Nominal Role submitted
+    if attendance_form.submit_attended.data and attendance_form.validate_on_submit():
+        flash("Nominal roll submitted.")
         students_attended = request.form.getlist('attended')
         for user in users:
+            user.nominal_submitted = True
             if str(user.id) in students_attended:
                 user.attended_sport = True
             else:
@@ -244,7 +247,13 @@ def sign_up_to_sport(name):
     if current_user.sport_id == sport.id:
         flash("You are no longer signed up to {}".format(sport.name.capitalize()))
         current_user.unsign_up_to_sport(sport.name)
+        current_user.attended_sport = False
+        current_user.nominal_submitted = False
+        db.session.commit()
     else:
         flash("You are now signed up to {}".format(sport.name.capitalize()))
         current_user.sign_up_to_sport(sport.name)
+        current_user.attended_sport = False
+        current_user.nominal_submitted = False
+        db.session.commit()
     return redirect(url_for("sport_page", name=name))

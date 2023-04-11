@@ -1,7 +1,7 @@
 '''Stores all the form logic for web app'''
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, TextAreaField, SubmitField, EmailField, FileField, MultipleFileField, IntegerField, SelectField, URLField, HiddenField
+from wtforms import StringField, PasswordField, BooleanField, TextAreaField, SubmitField, EmailField, FieldList, MultipleFileField, IntegerField, SelectField, URLField, HiddenField
 from wtforms.validators import DataRequired, Email, EqualTo, Length, ValidationError
 from app.models import User
 

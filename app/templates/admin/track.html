@@ -46,6 +46,7 @@
                             <th>Name</th>
                             <th>Sport</th>
                             <th>Signed up at</th>
+                            <th>Attended</th>
                             <th>Remarks</th>
                             <th>Actions</th>
                         </tr>
@@ -71,6 +72,15 @@
                             <td>
                                 {% if user.sign_up_timestamp %}
                                 <p class="fw-normal mb-1">{{ user.sign_up_timestamp.strftime('%Y-%m-%d %H:%M') }}</p>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if not user.nominal_submitted %}
+                                <p class="fw-normal mb-1">Nominal not submitted</p>
+                                {% elif user.attended_sport %}
+                                <p class="fw-normal mb-1">Yes</p>
+                                {% else %}
+                                <p class="fw-normal mb-1">No</p>
                                 {% endif %}
                             </td>
                             <td>

@@ -20,6 +20,7 @@ class User(UserMixin, db.Model):
     sport_id = db.Column(db.Integer, db.ForeignKey("sports.id"))
     sign_up_timestamp = db.Column(db.DateTime, index=True)
     attended_sport = db.Column(db.Boolean, default=False)
+    nominal_submitted = db.Column(db.Boolean, default=False)
 
     roles = db.relationship("Role", secondary="user_roles")
     posts = db.relationship("Post", backref="author", lazy="dynamic")
