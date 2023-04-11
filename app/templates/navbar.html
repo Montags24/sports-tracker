@@ -1,25 +1,35 @@
-<div class="container fixed-top">
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="{{ url_for('home') }}">8 Trg Bn Home</a>
-      <!-- Toggle button -->
-      <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <i class="fas fa-bars"></i>
-      </button>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #253846;">
+  <button
+  class="navbar-toggler"
+  type="button"
+  data-mdb-toggle="collapse"
+  data-mdb-target="#navbarSupportedContent"
+  aria-controls="navbarSupportedContent"
+  aria-expanded="false"
+  aria-label="Toggle navigation"
+>
+  <i class="fas fa-bars"></i>
+</button>
+
+<div class="container d-flex justify-content-center">
+  <div class="row">
+    <div class="col-12 d-flex justify-content-center">
+      <a class="navbar-brand" href="{{ url_for('home') }}"><h1 style="font-family: 'Roboto Slab', serif, bold;">8 TRAINING BATALLION</h1></a>
+    </div>
+    <div class="col-12">
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('sports') }}">Sports</a>
+            <a class="nav-link mx-2" href="{{ url_for('sports') }}">Sports</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link mx-2" href="#!">Posts</a>
           </li>
         </ul>
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          {% if current_user.is_anonymous %}
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('login') }}">Login</a>
-          </li>
-          {% else %}
-          <li class="nav-item dropdown">
+        <ul class="navbar-nav align-items-center me-auto">
+          {% if current_user.is_authenticated %}
+          <li class="nav-item dropdown mx-2">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
               data-mdb-toggle="dropdown" aria-expanded="false">
               {{ current_user.username }}
@@ -40,16 +50,20 @@
               {% endif %}
             </ul>
           </li>
+          {% endif %}
+          {% if current_user.is_anonymous %}
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+            <a class="nav-link mx-2" href="{{ url_for('login') }}"><i class="fa-regular fa-user"></i> Login/Register</a>
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link mx-2" href="{{ url_for('logout') }}"><i class="fa-regular fa-user"></i> Logout</a>
           </li>
           {% endif %}
         </ul>
-        <form class="d-flex">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
       </div>
     </div>
-  </nav>
+  </div>
 </div>
+</nav>
+<!-- Navbar -->

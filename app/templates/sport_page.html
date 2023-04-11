@@ -1,90 +1,112 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container">
-    <div class="container">
-        <!-- Jumbotron -->
-        <div class="text-center bg-image" style="
+<div class="section" style="background-color: #feffff;">
+  <div class="container">
+    <!-- Jumbotron -->
+    <div class="text-center bg-image" style="
             background-image: url('{{ sport.img_src }}');
             height: 300px;
         ">
-        <div class="mask" style="background-color: rgba(0, 0, 0, 0.6);">
-            <div class="d-flex justify-content-center align-items-center h-100">
-            <div class="text-white">
-                <h1 class="mb-3">{{ sport.name.capitalize() }}</h1>
-                <h4 class="mb-3">{{ sport.description }}</h4>
-            </div>
-            </div>
+      <div class="mask" style="background-color: rgba(0, 0, 0, 0.6);">
+        <div class="d-flex justify-content-center align-items-center h-100">
+          <div class="text-white">
+            <h1 class="mb-3">{{ sport.name.capitalize() }}</h1>
+            <h4 class="mb-3">{{ sport.description }}</h4>
+          </div>
         </div>
-        </div>
-      <!-- Tabs -->
+      </div>
+    </div>
+    <!-- Tabs -->
 
-      <!-- Tabs navs -->
+    <!-- Tabs navs -->
     <ul class="nav nav-tabs mb-3" id="ex-with-icons" role="tablist">
-        <li class="nav-item" role="presentation">
-        <a class="nav-link active" id="ex-with-icons-tab-1" data-mdb-toggle="tab" href="#ex-with-icons-tabs-1" role="tab"
-            aria-controls="ex-with-icons-tabs-1" aria-selected="true"><i class="fas fa-images fa-fw me-2"></i></i>Gallery</a>
-        </li>
-        <li class="nav-item" role="presentation">
-            <a class="nav-link" id="ex-with-icons-tab-4" data-mdb-toggle="tab" href="#ex-with-icons-tabs-4" role="tab"
-                aria-controls="ex-with-icons-tabs-4" aria-selected="true"><i class="fas fa-images fa-fw me-2"></i></i>Posts</a>
-        </li>
-        {% if current_user.is_authenticated %}
-        <li class="nav-item" role="presentation">
+      <li class="nav-item" role="presentation">
+        <a class="nav-link active" id="ex-with-icons-tab-1" data-mdb-toggle="tab" href="#ex-with-icons-tabs-1"
+          role="tab" aria-controls="ex-with-icons-tabs-1" aria-selected="true"><i
+            class="fas fa-images fa-fw me-2"></i></i>Gallery</a>
+      </li>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link" id="ex-with-icons-tab-4" data-mdb-toggle="tab" href="#ex-with-icons-tabs-4" role="tab"
+          aria-controls="ex-with-icons-tabs-4" aria-selected="true"><i
+            class="fas fa-images fa-fw me-2"></i></i>Posts</a>
+      </li>
+      {% if current_user.is_authenticated %}
+      <li class="nav-item" role="presentation">
         <a class="nav-link" id="ex-with-icons-tab-2" data-mdb-toggle="tab" href="#ex-with-icons-tabs-2" role="tab"
-            aria-controls="ex-with-icons-tabs-2" aria-selected="false"><i class="fas fa-info fa-fw me-2"></i></i>Information</a>
-        </li>
-        {% if "sport_oic" in current_user.get_permissions() or "admin" in current_user.get_permissions() %}
-        <li class="nav-item" role="presentation">
+          aria-controls="ex-with-icons-tabs-2" aria-selected="false"><i
+            class="fas fa-info fa-fw me-2"></i></i>Information</a>
+      </li>
+      {% if "sport_oic" in current_user.get_permissions() or "admin" in current_user.get_permissions() %}
+      <li class="nav-item" role="presentation">
+        <a class="nav-link" id="ex-with-icons-tab-5" data-mdb-toggle="tab" href="#ex-with-icons-tabs-5" role="tab"
+          aria-controls="ex-with-icons-tabs-5" aria-selected="false"><i class="fas fa-cogs fa-fw me-2"></i>Nominal
+          Roll</a>
+      </li>
+      <li class="nav-item" role="presentation">
         <a class="nav-link" id="ex-with-icons-tab-3" data-mdb-toggle="tab" href="#ex-with-icons-tabs-3" role="tab"
-            aria-controls="ex-with-icons-tabs-3" aria-selected="false"><i class="fas fa-cogs fa-fw me-2"></i>Edit Page</a>
-        </li>
-        {% endif %}
-        {% endif %}
+          aria-controls="ex-with-icons-tabs-3" aria-selected="false"><i class="fas fa-cogs fa-fw me-2"></i>Edit
+          Page</a>
+      </li>
+      {% endif %}
+      {% endif %}
     </ul>
     <!-- Tabs navs -->
-    
+
     <!-- Tabs content -->
     <div class="tab-content" id="ex-with-icons-content">
-        <div class="tab-pane fade show active" id="ex-with-icons-tabs-1" role="tabpanel" aria-labelledby="ex-with-icons-tab-1">
+      <div class="tab-pane fade show active" id="ex-with-icons-tabs-1" role="tabpanel"
+        aria-labelledby="ex-with-icons-tab-1">
         Tab 1 content
-        </div>
-        <!-- Posts -->
-        <div class="tab-pane fade" id="ex-with-icons-tabs-4" role="tabpanel" aria-labelledby="ex-with-icons-tab-4">
-            <div class="section mt-3">
-                <div class="row mt-4">
-                  <div class="col-md-6">
-                    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                      <div class="col p-4 d-flex flex-column position-static">
-                        <h3 class="mb-0">Featured post</h3>
-                        <div class="mb-1 text-muted">Nov 12</div>
-                        <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-                        <a href="#" class="stretched-link">Continue reading</a>
-                      </div>
-                      <div class="col-auto d-none d-lg-block">
-                        <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div class="col-md-6">
-                    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                      <div class="col p-4 d-flex flex-column position-static">
-                        <h3 class="mb-0">Post title</h3>
-                        <div class="mb-1 text-muted">Nov 11</div>
-                        <p class="mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-                        <a href="#" class="stretched-link">Continue reading</a>
-                      </div>
-                      <div class="col-auto d-none d-lg-block">
-                        <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-                      </div>
-                    </div>
-                  </div>
+      </div>
+      <!-- Posts -->
+      <div class="tab-pane fade" id="ex-with-icons-tabs-4" role="tabpanel" aria-labelledby="ex-with-icons-tab-4">
+        <div class="section mt-3">
+          <div class="row mt-4">
+            <div class="col-md-6">
+              <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-4 d-flex flex-column position-static">
+                  <h3 class="mb-0">Featured post</h3>
+                  <div class="mb-1 text-muted">Nov 12</div>
+                  <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to
+                    additional content.</p>
+                  <a href="#" class="stretched-link">Continue reading</a>
+                </div>
+                <div class="col-auto d-none d-lg-block">
+                  <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img"
+                    aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+                    <title>Placeholder</title>
+                    <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef"
+                      dy=".3em">Thumbnail</text>
+                  </svg>
                 </div>
               </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-4 d-flex flex-column position-static">
+                  <h3 class="mb-0">Post title</h3>
+                  <div class="mb-1 text-muted">Nov 11</div>
+                  <p class="mb-auto">This is a wider card with supporting text below as a natural lead-in to
+                    additional content.</p>
+                  <a href="#" class="stretched-link">Continue reading</a>
+                </div>
+                <div class="col-auto d-none d-lg-block">
+                  <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img"
+                    aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+                    <title>Placeholder</title>
+                    <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef"
+                      dy=".3em">Thumbnail</text>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <!-- End Posts -->
-        <div class="tab-pane fade" id="ex-with-icons-tabs-2" role="tabpanel" aria-labelledby="ex-with-icons-tab-2">
+      </div>
+      <!-- Information -->
+      <div class="tab-pane fade" id="ex-with-icons-tabs-2" role="tabpanel" aria-labelledby="ex-with-icons-tab-2">
         <p><strong>Sport's OIC:</strong> {{ sport.sport_oic}}</p>
         <p><strong>OIC email:</strong> {{ sport.sport_oic_email}}</p>
         <p><strong>Location:</strong> {{ sport.location}}</p>
@@ -100,63 +122,115 @@
             {% else %}
             Sign Up Now
             {% endif %}
-        </button></a>
+          </button></a>
         {% endif %}
         {% endif %}
 
+      </div>
+      <!-- Nominal Roll -->
+      <div class="tab-pane fade" id="ex-with-icons-tabs-5" role="tabpanel" aria-labelledby="ex-with-icons-tab-5">
+        <div class="section mt-5">
+          <div class="row justify-content-center">
+            <div class="col-6">
+              <div class="bg-white border rounded-5">
+                <div class="w-90 p-4 table-responsive">
+                  <form action="" method="POST">
+                    {{ attendance_form.hidden_tag() }}
+                    <table class="table align-middle mb-0 bg-white">
+                      <thead class="bg-light">
+                        <tr>
+                          <th>Username</th>
+                          <th>Name</th>
+                          <th>Company</th>
+                          <th>Attended</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for user in users %}
+                        <tr>
+                          <td>
+                            <div class="d-flex">
+                              <p class="fw-normal mb-1">{{ user.username }}</p>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="d-flex">
+                              <p class="fw-normal mb-1">{{ user.first_name + " " + user.last_name }}</p>
+                            </div>
+                          </td>
+                          <td>
+                            <p class="fw-normal mb-1">{{ user.company }}</p>
+                            <p class="fw-normal mb-1">{{ user.platoon }} Pl, {{ user.section }} Sect</p>
+                          </td>
+                          <td>
+                            <input type="checkbox" id="attended" name="attended" value="{{ user.id }}" {% if user.attended_sport %} checked {% endif %}>
+                          </td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                    {{ attendance_form.submit_attended(class="btn btn-dark") }}
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="tab-pane fade" id="ex-with-icons-tabs-3" role="tabpanel" aria-labelledby="ex-with-icons-tab-3">
+      </div>
+      <!-- Edit Page -->
+      <div class="tab-pane fade" id="ex-with-icons-tabs-3" role="tabpanel" aria-labelledby="ex-with-icons-tab-3">
         <form action="" method="POST">
-            {{ form.hidden_tag() }}
+          {{ form.hidden_tag() }}
 
-            {{ form.description.label(class="form-label") }}
-            {{ form.description(class="form-control") }}
-            {% for error in form.description.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-            <br>
-            {{ form.sport_oic.label(class="form-label") }}
-            {{ form.sport_oic(class="form-control") }}
-            {% for error in form.sport_oic.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-            <br>
-            {{ form.sport_oic_email.label(class="form-label") }}
-            {{ form.sport_oic_email(class="form-control") }}
-            {% for error in form.sport_oic_email.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-            <br>
-            {{ form.location.label(class="form-label") }}
-            {{ form.location(class="form-control") }}
-            {% for error in form.location.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-            <br>
-            {{ form.timing.label(class="form-label") }}
-            {{ form.timing(class="form-control") }}
-            {% for error in form.timing.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-            <br>
-            {{ form.capacity.label(class="form-label") }}
-            {{ form.capacity(class="form-control") }}
-            {% for error in form.capacity.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-            <br>
-            {{ form.img_src.label(class="form-label") }}
-            {{ form.img_src(class="form-control") }}
-            {% for error in form.img_src.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-            <br>
-            {{ form.submit(class="btn btn-dark mb-5") }}
+          {{ form.description.label(class="form-label") }}
+          {{ form.description(class="form-control") }}
+          {% for error in form.description.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+          {% endfor %}
+          <br>
+          {{ form.sport_oic.label(class="form-label") }}
+          {{ form.sport_oic(class="form-control") }}
+          {% for error in form.sport_oic.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+          {% endfor %}
+          <br>
+          {{ form.sport_oic_email.label(class="form-label") }}
+          {{ form.sport_oic_email(class="form-control") }}
+          {% for error in form.sport_oic_email.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+          {% endfor %}
+          <br>
+          {{ form.location.label(class="form-label") }}
+          {{ form.location(class="form-control") }}
+          {% for error in form.location.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+          {% endfor %}
+          <br>
+          {{ form.timing.label(class="form-label") }}
+          {{ form.timing(class="form-control") }}
+          {% for error in form.timing.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+          {% endfor %}
+          <br>
+          {{ form.capacity.label(class="form-label") }}
+          {{ form.capacity(class="form-control") }}
+          {% for error in form.capacity.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+          {% endfor %}
+          <br>
+          {{ form.img_src.label(class="form-label") }}
+          {{ form.img_src(class="form-control") }}
+          {% for error in form.img_src.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+          {% endfor %}
+          <br>
+          {{ form.submit(class="btn btn-dark mb-5") }}
         </form>
-        
-        </div>
+
+      </div>
     </div>
-  <!-- Tabs content -->
+    <!-- Tabs content -->
+  </div>
 </div>
 
 {% endblock %}

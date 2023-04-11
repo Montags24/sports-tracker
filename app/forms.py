@@ -1,7 +1,7 @@
 '''Stores all the form logic for web app'''
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, TextAreaField, SubmitField, EmailField, FileField, MultipleFileField, IntegerField, SelectField, URLField
+from wtforms import StringField, PasswordField, BooleanField, TextAreaField, SubmitField, EmailField, FileField, MultipleFileField, IntegerField, SelectField, URLField, HiddenField
 from wtforms.validators import DataRequired, Email, EqualTo, Length, ValidationError
 from app.models import User
 
@@ -75,3 +75,8 @@ class TrackStudentForm(FlaskForm):
     platoon = SelectField("Platoon", choices=["5", "6", "7", "8", "9", "10", "11", "12"], validators=[DataRequired()])
     section = SelectField("Section", choices=["1", "2", "3", "4"], validators=[DataRequired()])
     submit = SubmitField("Search")
+
+class StudentAttendanceForm(FlaskForm):
+    user_id = HiddenField("user_id")
+    attended_sport = BooleanField("Attended")
+    submit_attended = SubmitField("Submit")

@@ -1,123 +1,130 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container">
+<div class="container-fluid">
   <!-- Carousel wrapper -->
-<div id="carouselBasicExample" class="carousel slide carousel-fade" data-mdb-ride="carousel">
-  <!-- Indicators -->
-  <div class="carousel-indicators">
-    <button
-      type="button"
-      data-mdb-target="#carouselBasicExample"
-      data-mdb-slide-to="0"
-      class="active"
-      aria-current="true"
-      aria-label="Slide 1"
-    ></button>
-    <button
-      type="button"
-      data-mdb-target="#carouselBasicExample"
-      data-mdb-slide-to="1"
-      aria-label="Slide 2"
-    ></button>
-    <button
-      type="button"
-      data-mdb-target="#carouselBasicExample"
-      data-mdb-slide-to="2"
-      aria-label="Slide 3"
-    ></button>
+  <div id="carouselBasicExample" class="carousel slide carousel-fade" data-mdb-ride="carousel">
+    <!-- Indicators -->
+    <div class="carousel-indicators">
+      <button type="button" data-mdb-target="#carouselBasicExample" data-mdb-slide-to="0" class="active"
+        aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-mdb-target="#carouselBasicExample" data-mdb-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-mdb-target="#carouselBasicExample" data-mdb-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+
+    <!-- Inner -->
+    <div class="carousel-inner">
+      <!-- Single item -->
+      <div class="carousel-item active">
+        <img src="https://i.pinimg.com/originals/7c/a3/89/7ca3891c64d77447ad4cafaec47d5055.jpg" class="d-block w-100"
+          alt="Sport Homepage photo 1">
+        <div class="carousel-caption d-flex flex-column justify-content-center align-items-center align-items-md-start">
+          <h1 class="display-4 mb-4 text-black home-page-text" style="background-color: #ffffff;">Over 20 sports
+            available</h1>
+          <a href="{{ url_for('sports') }}">
+            <button type="button" class="btn btn-lg btn-info rounded-pill px-5 py-3 shadow home-page-button"
+              style="font-size: large;">See
+              Sports</button>
+          </a>
+        </div>
+      </div>
+
+      <!-- Single item -->
+      <div class="carousel-item">
+        <img src="https://www.armyrugbyunion.org.uk/wp-content/uploads/2017/09/fallen4.jpg" class="d-block w-100"
+          alt="Sport Homepage photo 2" />
+        <div class="carousel-caption d-flex flex-column justify-content-center align-items-center">
+          <h1 class="display-4 mb-4 text-black home-page-text" style="background-color: #ffffff;">Competition at Regt,
+            Corps and Army level</h1>
+        </div>
+      </div>
+
+      <!-- Single item -->
+      <div class="carousel-item">
+        <img src="https://pbs.twimg.com/media/DlcWlCyUUAAOrwA.jpg" class="d-block w-100" alt="Sport Homepage photo 3" />
+        <div class="carousel-caption d-flex flex-column justify-content-end align-items-end">
+          <h1 class="display-4 mb-4 text-black home-page-text" style="background-color: #ffffff;"
+            style="font-size: large;">Sign up now</h1>
+          <a href="{{ url_for('login') }}">
+            <button type="button"
+              class="btn btn-lg btn-info rounded-pill px-5 py-3 shadow home-page-button">Login/Register</button>
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- Inner -->
+
+    <!-- Controls -->
+    <button class="carousel-control-prev" type="button" data-mdb-target="#carouselBasicExample" data-mdb-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-mdb-target="#carouselBasicExample" data-mdb-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
   </div>
-
-  <!-- Inner -->
-  <div class="carousel-inner">
-    <!-- Single item -->
-    <div class="carousel-item active">
-      <img src="https://i.pinimg.com/originals/7c/a3/89/7ca3891c64d77447ad4cafaec47d5055.jpg" class="d-block w-100" alt="Sunset Over the City"/>
-      <div class="carousel-caption">
-        <h1 class="sports-title">8 Training Batallion Sports</h1>
-      </div>
-    </div>
-
-    <!-- Single item -->
-    <div class="carousel-item">
-      <img src="https://www.armyrugbyunion.org.uk/wp-content/uploads/2017/09/fallen4.jpg" class="d-block w-100" alt="Canyon at Nigh"/>
-      <div class="carousel-caption">
-        <h1 class="sports-title">8 Training Batallion Sports</h1>
-      </div>
-    </div>
-
-    <!-- Single item -->
-    <div class="carousel-item">
-      <img src="https://pbs.twimg.com/media/DlcWlCyUUAAOrwA.jpg" class="d-block w-100" alt="Cliff Above a Stormy Sea"/>
-      <div class="carousel-caption">
-        <h1 class="sports-title">8 Training Batallion Sports</h1>
-      </div>
-    </div>
-  </div>
-  <!-- Inner -->
-
-  <!-- Controls -->
-  <button class="carousel-control-prev" type="button" data-mdb-target="#carouselBasicExample" data-mdb-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-mdb-target="#carouselBasicExample" data-mdb-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
-</div>
-<!-- Carousel wrapper -->
-<!-- Posts -->
-<div class="section mt-3">
-  <h1><u>Latest Posts</u></h1>
-  <div class="row mt-4">
-    <div class="col-md-6">
-      <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-        <div class="col p-4 d-flex flex-column position-static">
-          <strong class="d-inline-block mb-2 text-primary">Football</strong>
-          <h3 class="mb-0">Craftsman Cup Winners</h3>
-          <div class="mb-1 text-muted">Nov 12</div>
-          <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-          <a href="#" class="stretched-link">Continue reading</a>
-        </div>
-        <div class="col-auto d-none d-lg-block">
-          <!-- <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg> -->
-          <img style="width:200px; height:250px; object-fit: cover;" src="https://talksport.com/wp-content/uploads/sites/5/2019/06/GettyImages-1153100264.jpg?strip=all&w=960&quality=100" alt="">
-        </div>
-      </div>
-    </div>
-    
-    <div class="col-md-6">
-      <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-        <div class="col p-4 d-flex flex-column position-static">
-          <strong class="d-inline-block mb-2 text-success">Cross Country</strong>
-          <h3 class="mb-0">Success at Inter Corps</h3>
-          <div class="mb-1 text-muted">Nov 11</div>
-          <p class="mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-          <a href="#" class="stretched-link">Continue reading</a>
-        </div>
-        <div class="col-auto d-none d-lg-block">
-          <!-- <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg> -->
-          <img style="width:200px; height:250px; object-fit: cover;" src="https://www.morpethharriers.co.uk/uploads/3/2/2/5/32257501/2020-army-1mxiyik1-jpeg-v2_orig.jpg" alt="">
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-    {% if posts %}
-        {% for post in posts %}
-        <div class="card mt-4">
-            <h5 class="card-header">{{ post.title }}</h5>
-            <div class="card-body">
-              <h5 class="card-title">{{ post.body }}</h5>
-              <p class="card-text">Date posted: {{ post.date }}</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
+  <!-- Carousel wrapper -->
+  <!-- Posts -->
+  <div class="section" style="background-color: #eccba6;">
+    <div class="container pt-3">
+      <h1 style="font-family: 'Roboto Slab', serif, bold;">LATEST POSTS</h1>
+      <div class="row mt-4">
+        <div class="col-md-6">
+          <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative"
+            style="background-color: #feffff;">
+            <div class="col p-4 d-flex flex-column position-static">
+              <strong class="d-inline-block mb-2 text-primary">Football</strong>
+              <h3 class="mb-0">Craftsman Cup Winners</h3>
+              <div class="mb-1 text-muted">Nov 12</div>
+              <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to
+                additional content.</p>
+              <a href="#" class="stretched-link">Continue reading</a>
+            </div>
+            <div class="col-auto d-none d-lg-block">
+              <!-- <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg> -->
+              <img style="width:200px; height:250px; object-fit: cover;"
+                src="https://talksport.com/wp-content/uploads/sites/5/2019/06/GettyImages-1153100264.jpg?strip=all&w=960&quality=100"
+                alt="">
             </div>
           </div>
-        {% endfor %}
-    {% endif %}
+        </div>
+
+        <div class="col-md-6">
+          <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative"
+            style="background-color: #feffff;">
+            <div class="col p-4 d-flex flex-column position-static">
+              <strong class="d-inline-block mb-2 text-success">Cross Country</strong>
+              <h3 class="mb-0">Success at Inter Corps</h3>
+              <div class="mb-1 text-muted">Nov 11</div>
+              <p class="mb-auto">This is a wider card with supporting text below as a natural lead-in to additional
+                content.</p>
+              <a href="#" class="stretched-link">Continue reading</a>
+            </div>
+            <div class="col-auto d-none d-lg-block">
+              <!-- <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg> -->
+              <img style="width:200px; height:250px; object-fit: cover;"
+                src="https://www.morpethharriers.co.uk/uploads/3/2/2/5/32257501/2020-army-1mxiyik1-jpeg-v2_orig.jpg"
+                alt="">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class=section style="background-color: #eaf4fa;">
+    <div class="container">
+      <h1 style="font-family: 'Roboto Slab', serif, bold;">UPCOMING FIXTURES</h1>
+    </div>
+  </div>
+
+  <div class=section style="background-color: #eaf4fa;">
+    <div class="container">
+      <h1 style="font-family: 'Roboto Slab', serif, bold;">INSTAGRAM PHOTOS</h1>
+    </div>
+  </div>
+
 </div>
 
 {% endblock %}

@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect, request, session
 from sqlalchemy import desc, asc
 from app import app, db
-from app.forms import LoginForm, RegistrationForm, EditProfileForm, EditSportPageForm, SearchUserForm, EditUserRolesForm, AddSportForm, TrackStudentForm
+from app.forms import LoginForm, RegistrationForm, EditProfileForm, EditSportPageForm, SearchUserForm, EditUserRolesForm, AddSportForm, TrackStudentForm, StudentAttendanceForm
 # Login
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, UserRoles, Role, Post, Sport
@@ -220,12 +220,22 @@ def sports():
 def sport_page(name):
     sport = Sport.query.filter_by(name=name).first_or_404()
     form = EditSportPageForm(obj=sport)
+    users = User.query.filter_by(sport_id=sport.id).all()
+    attendance_form = StudentAttendanceForm()
     if form.validate_on_submit():
         form.populate_obj(sport)
         db.session.commit()
         flash("Changes have been made successfully.")
         return redirect(url_for("sport_page", name=name))
-    return render_template("sport_page.html", sport=sport, form=form)
+    if attendance_form.validate_on_submit():
+        students_attended = request.form.getlist('attended')
+        for user in users:
+            if str(user.id) in students_attended:
+                user.attended_sport = True
+            else:
+                user.attended_sport = False
+        db.session.commit()
+    return render_template("sport_page.html", sport=sport, form=form, attendance_form=attendance_form, users=users)
 
 
 @app.route('/sports/<name>/signup', methods=["GET", "POST"])

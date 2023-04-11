@@ -40,15 +40,18 @@ class User(UserMixin, db.Model):
 
     def add_roles(self, username, roles):
         user = User.query.filter_by(username=username).first()
+        # Roles in form of dictionary {'admin': False, 'sport_oic':True, 'staff': True}
         for role, bool in roles.items():
             role = Role.query.filter_by(name=role).first()
             user_role = UserRoles.query.filter_by(user_id=user.id, role_id=role.id).first()
             if bool:
+                # Add role to user if user previously did not have it
                 if not user_role:
                     user_role = UserRoles(user_id=user.id, role_id=role.id)
                     db.session.add(user_role)
                     db.session.commit()
             else:
+                # Remove role from user
                 if user_role:
                     UserRoles.query.filter_by(user_id=user.id, role_id=role.id).delete()
                     db.session.commit()
@@ -119,8 +122,7 @@ class Sport(db.Model):
         user_sign_ups = User.query.filter_by(sport_id=self.id).all()
         return len(user_sign_ups)
         
-
-
+        
 # Keep track of logged in user
 @login.user_loader
 def load_user(id):
