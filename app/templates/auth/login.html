@@ -2,40 +2,42 @@
 
 {% block content %}
 <div class="container">
-    <section class="vh-100 gradient-custom">
-        <div class="container py-5 h-100">
-          <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-              <div class="card bg-dark text-white" style="border-radius: 1rem;">
-                <div class="card-body p-5 text-center">
-                  <div class="mb-md-5 mt-md-4 pb-5">
-                    <h2 class="fw-bold mb-2 text-uppercase">Login</h2>
-                    <p class="text-white mb-5">Please enter your login and password!</p>
-                    <form action="" method="POST">
+  <section class="vh-50 gradient-custom">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-8 col-lg-5 col-xl-5">
+          <div class="card bg-light" style="border-radius: 1rem;">
+            <div class="card-body p-3 text-center">
+              <div class="row justify-content-center mb-md-5 mt-md-4 pb-1">
+                <h2 class="fw-bold mb-2 text-uppercase">Login</h2>
+                <div class="col-md-6">
+                  <form action="" method="POST">
                     {{ form.hidden_tag() }}
-                    {{ form.username.label(class="form-label text-white") }}
+                    {{ form.username.label(class="form-label text-black") }}
                     {{ form.username(class="form-control") }}
                     <br>
-                    {{ form.password.label(class="form-label text-white") }}
+                    {{ form.password.label(class="form-label text-black") }}
                     {{ form.password(class="form-control") }}
                     {% for error in form.password.errors %}
                     <span style="color: red;">[{{ error }}]</span>
                     {% endfor %}
                     <br>
                     {{ form.remember_me() }}
-                    {{ form.remember_me.label(class="form-label text-white")}}
+                    {{ form.remember_me.label(class="form-label text-black")}}
                     <br>
-                    {{ form.submit(class="btn btn-light") }}
+                    {{ form.submit(class="btn btn-dark") }}
                     <hr>
-                    <a href="{{ url_for('register') }}"><button type="button" class="btn btn-light">Create new account</button></a> 
-                    </form>
-                  </div>
+                    <a href="{{ url_for('register') }}"><button type="button" class="btn btn-dark">Create new
+                        account</button></a>
+                  </form>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </section>
+      </div>
+    </div>
+  </section>
 </div>
 
 {% endblock %}

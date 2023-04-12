@@ -1,36 +1,84 @@
-<div class="container">
-    <!-- Jumbotron -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container">
-      <a class="navbar-brand" href="{{ url_for('home') }}">8Bn Sports Page</a>
-        <!-- Toggle button -->
-        <button
-        class="navbar-toggler"
-        type="button"
-        data-mdb-toggle="collapse"
-        data-mdb-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <i class="fas fa-bars"></i>
-      </button>
+<!-- Jumbotron -->
+<div class="section" style="background-color: #253846;">
+  <div class="pt-2">
+    <div class="container d-flex justify-content-center text-white">
+      <div class="row">
+        <!-- Center elements -->
+        <div class="col-md-12">
+          <a class="navbar-brand" href="{{ url_for('home') }}">
+            <h1 style="font-family: 'Roboto Slab', serif, bold;">ADMIN</h1>
+          </a>
+        </div>
+        <!-- Center elements -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #253846;">
+  <div class="container">
+    <div class="row container">
+
+      <div class="col-12">
+        <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
+          data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+          aria-label="Toggle navigation">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+
+      <div class="col-12">
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <!-- Left hand icons -->
+          <ul class="navbar-nav ms-auto">
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('admin') }}">Admin homepage</a>
+              <a class="nav-link mx-2" href="{{ url_for('edit_roles') }}">Edit User Roles</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('edit_roles') }}">Edit User Roles</a>
+              <a class="nav-link mx-2" href="{{ url_for('edit_sports') }}">Edit Sport</a>
             </li>
+          </ul>
+          <!-- Right hand icons -->
+          <ul class="navbar-nav me-auto nav-flex-icons">
+            {% if current_user.is_authenticated %}
+            <li class="nav-item dropdown mx-2">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                data-mdb-toggle="dropdown" aria-expanded="false">
+                <i class="fa-regular fa-user"></i> {{ current_user.username }}
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li>
+                  <a class="dropdown-item" href="{{ url_for('profile', username=current_user.username) }}">Profile</a>
+                </li>
+                {% if "admin" in current_user.get_permissions() %}
+                <li>
+                  <a class="dropdown-item" href="{{ url_for('admin') }}">Admin</a>
+                </li>
+                {% endif %}
+                {% if "staff" in current_user.get_permissions() %}
+                <li>
+                  <a class="dropdown-item" href="{{ url_for('track_section') }}">Track Section</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{{ url_for('track_section') }}">Track Sport</a>
+                </li>
+                {% endif %}
+              </ul>
+            </li>
+            {% endif %}
+            {% if current_user.is_anonymous %}
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('edit_sports') }}">Edit Sports</a>
+              <a class="nav-link mx-2" href="{{ url_for('login') }}">Login/Register</a>
             </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link mx-2" href="{{ url_for('logout') }}">Logout</a>
+            </li>
+            {% endif %}
           </ul>
         </div>
       </div>
-    </nav>
-    <div class="bg-image p-5 text-center shadow-1-strong text-white mb-3" 
-    style="background-image: url('https://www.paradata.org.uk/sites/default/files/styles/modal/public/pictures/7aaremecampbastion.jpg');">
-    <h1 class="mb-3 h2">Admin Panel</h1>
-</div>
+    </div>
+  </div>
+</nav>
+<!-- Navbar -->

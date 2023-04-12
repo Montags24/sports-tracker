@@ -115,6 +115,7 @@ class Sport(db.Model):
     location = db.Column(db.String(64))
     timing = db.Column(db.String(32))
     users = db.relationship("User", backref="sport")
+    nominal_submitted = db.Column(db.Boolean)
 
     def __repr__(self):
         return "<Sport {}>".format(self.name)

@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect, request, session
 from sqlalchemy import desc, asc
 from app import app, db
-from app.forms import LoginForm, RegistrationForm, EditProfileForm, EditSportPageForm, SearchUserForm, EditUserRolesForm, AddSportForm, TrackStudentForm, StudentAttendanceForm
+from app.forms import LoginForm, RegistrationForm, EditProfileForm, EditSportPageForm, SearchUserForm, EditUserRolesForm, AddSportForm, TrackStudentForm, StudentAttendanceForm, TrackSportForm
 # Login
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, UserRoles, Role, Post, Sport
@@ -111,11 +111,11 @@ def admin():
     return render_template("admin/admin.html", title="Admin Page")
 
 
+# Edit user roles - Admin, Sports OIC, Staff
 @app.route("/admin/edit_roles", methods=["GET", "POST"])
 @login_required
 @flask_authorization.permission_required(["admin"])
 def edit_roles():
-    # Initialise forms
     search_form = SearchUserForm()
     roles_form = EditUserRolesForm()
 
@@ -186,24 +186,59 @@ def edit_sports(user=None):
     return render_template("admin/edit_sports.html", title="Edit User Roles", sport_form=sport_form)
 
 
-@app.route("/track", methods=["GET", "POST"])
-@login_required
-@flask_authorization.permission_required(["admin", "sports_oic", "staff"])
-def track():
-    form = TrackStudentForm()
-    return render_template("admin/track.html", form=form)
-
-@app.route("/track_section", methods=["GET", "POST"])
+@app.route("/track/section", methods=["GET", "POST"])
 @login_required
 @flask_authorization.permission_required(["admin", "sports_oic", "staff"])
 def track_section():
+    form = TrackStudentForm()
+    return render_template("admin/track_section.html", form=form)
+
+
+@app.route("/track/section/search", methods=["GET", "POST"])
+@login_required
+@flask_authorization.permission_required(["admin", "sports_oic", "staff"])
+def track_section_search():
     form = TrackStudentForm()
     if form.validate_on_submit():
         users = User.query.filter_by(platoon=form.platoon.data, section=form.section.data).all()
     else:
         flash("Please try again.")
-        return redirect(url_for('track'))
-    return render_template("admin/track.html", form=form, users=users, sports=sports)
+        return redirect(url_for('track_section'))
+    return render_template("admin/track_section.html", form=form, users=users, sports=sports)
+
+
+@app.route("/track/sport", methods=["GET", "POST"])
+@login_required
+@flask_authorization.permission_required(["admin", "sports_oic", "staff"])
+def track_sport():
+    form = TrackSportForm()
+    attendance_form = StudentAttendanceForm()
+    return render_template("admin/track_sport.html", form=form, attendance_form=attendance_form)
+
+
+@app.route("/track/sport/search", methods=["GET", "POST"])
+@login_required
+@flask_authorization.permission_required(["admin", "sports_oic", "staff"])
+def track_sport_search():
+    form = TrackSportForm()
+    attendance_form = StudentAttendanceForm()
+    if form.submit.data and form.validate_on_submit():
+        sport = Sport.query.filter_by(name=form.sport.data.lower()).first()
+        users = User.query.filter_by(sport_id=sport.id).all()
+        session["sport"] = sport.id
+    if attendance_form.submit_attended.data and attendance_form.validate_on_submit():
+        users = User.query.filter_by(sport_id=session["sport"]).all()
+        flash("Nominal roll submitted.")
+        students_attended = request.form.getlist('attended')
+        for user in users:
+            user.nominal_submitted = True
+            if str(user.id) in students_attended:
+                user.attended_sport = True
+            else:
+                user.attended_sport = False
+        db.session.commit()
+        return redirect(url_for('track_sport'))
+    return render_template("admin/track_sport.html", form=form, attendance_form=attendance_form, users=users)
 
 
 
@@ -221,24 +256,12 @@ def sport_page(name):
     sport = Sport.query.filter_by(name=name).first_or_404()
     form = EditSportPageForm(obj=sport)
     users = User.query.filter_by(sport_id=sport.id).all()
-    attendance_form = StudentAttendanceForm()
     if form.submit.data and form.validate_on_submit():
         form.populate_obj(sport)
         db.session.commit()
         flash("Changes have been made successfully.")
         return redirect(url_for("sport_page", name=name))
-    # Nominal Role submitted
-    if attendance_form.submit_attended.data and attendance_form.validate_on_submit():
-        flash("Nominal roll submitted.")
-        students_attended = request.form.getlist('attended')
-        for user in users:
-            user.nominal_submitted = True
-            if str(user.id) in students_attended:
-                user.attended_sport = True
-            else:
-                user.attended_sport = False
-        db.session.commit()
-    return render_template("sport_page.html", sport=sport, form=form, attendance_form=attendance_form, users=users)
+    return render_template("sport_page.html", sport=sport, form=form, users=users)
 
 
 @app.route('/sports/<name>/signup', methods=["GET", "POST"])

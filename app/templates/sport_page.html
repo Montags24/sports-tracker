@@ -39,11 +39,6 @@
       </li>
       {% if "sport_oic" in current_user.get_permissions() or "admin" in current_user.get_permissions() %}
       <li class="nav-item" role="presentation">
-        <a class="nav-link" id="ex-with-icons-tab-5" data-mdb-toggle="tab" href="#ex-with-icons-tabs-5" role="tab"
-          aria-controls="ex-with-icons-tabs-5" aria-selected="false"><i class="fas fa-cogs fa-fw me-2"></i>Nominal
-          Roll</a>
-      </li>
-      <li class="nav-item" role="presentation">
         <a class="nav-link" id="ex-with-icons-tab-3" data-mdb-toggle="tab" href="#ex-with-icons-tabs-3" role="tab"
           aria-controls="ex-with-icons-tabs-3" aria-selected="false"><i class="fas fa-cogs fa-fw me-2"></i>Edit
           Page</a>
@@ -126,56 +121,6 @@
         {% endif %}
         {% endif %}
 
-      </div>
-      <!-- Nominal Roll -->
-      <div class="tab-pane fade" id="ex-with-icons-tabs-5" role="tabpanel" aria-labelledby="ex-with-icons-tab-5">
-        <div class="section mt-5">
-          <div class="row justify-content-center">
-            <div class="col-md-6 col-sm-12">
-              <div class="bg-white border rounded-5">
-                <div class="w-90 p-4 table-responsive">
-                  <form action="" method="POST">
-                    {{ attendance_form.hidden_tag() }}
-                    <table class="table align-middle mb-0 bg-white">
-                      <thead class="bg-light">
-                        <tr>
-                          <th>Username</th>
-                          <th>Name</th>
-                          <th>Company</th>
-                          <th>Attended</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {% for user in users %}
-                        <tr>
-                          <td>
-                            <div class="d-flex">
-                              <p class="fw-normal mb-1">{{ user.username }}</p>
-                            </div>
-                          </td>
-                          <td>
-                            <div class="d-flex">
-                              <p class="fw-normal mb-1">{{ user.first_name + " " + user.last_name }}</p>
-                            </div>
-                          </td>
-                          <td>
-                            <p class="fw-normal mb-1">{{ user.company }}</p>
-                            <p class="fw-normal mb-1">{{ user.platoon }} Pl, {{ user.section }} Sect</p>
-                          </td>
-                          <td>
-                            <input type="checkbox" id="attended" name="attended" value="{{ user.id }}" {% if user.attended_sport %} checked {% endif %}>
-                          </td>
-                        </tr>
-                        {% endfor %}
-                      </tbody>
-                    </table>
-                    <div class="mt-3">{{ attendance_form.submit_attended(class="btn btn-dark") }}</div>              
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
       <!-- Edit Page -->
       <div class="tab-pane fade" id="ex-with-icons-tabs-3" role="tabpanel" aria-labelledby="ex-with-icons-tab-3">

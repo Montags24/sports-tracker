@@ -1,24 +1,46 @@
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #253846;">
-  <button
-  class="navbar-toggler"
-  type="button"
-  data-mdb-toggle="collapse"
-  data-mdb-target="#navbarSupportedContent"
-  aria-controls="navbarSupportedContent"
-  aria-expanded="false"
-  aria-label="Toggle navigation"
->
-  <i class="fas fa-bars"></i>
-</button>
-
-<div class="container d-flex justify-content-center">
-  <div class="row">
-    <div class="col-12 d-flex justify-content-center">
-      <a class="navbar-brand" href="{{ url_for('home') }}"><h1 style="font-family: 'Roboto Slab', serif, bold;">8 TRAINING BATALLION</h1></a>
+<!-- Jumbotron -->
+<div class="section" style="background-color: #253846;">
+  <div class="pt-2" >
+    <div class="container d-flex justify-content-center text-white" >
+      <div class="row">
+        <!-- Center elements -->
+        <div class="col-md-12">
+          <a class="navbar-brand" href="{{ url_for('home') }}">
+            <h1 class="d-none d-md-block" style="font-family: 'Roboto Slab', serif, bold;">8 TRAINING BATALLION</h1>
+            <h1 class="d-md-none d-lg-none d-xl-none" style="font-family: 'Roboto Slab', serif, bold;">8 TRG BN</h1>
+          </a>
+        </div>
+        <!-- Center elements -->
+      </div>
     </div>
+  </div>
+</div>
+
+
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #253846;">
+
+
+<div class="container">
+  <div class="row container">
+
+    <div class="col-12">
+      <button
+      class="navbar-toggler"
+      type="button"
+      data-mdb-toggle="collapse"
+      data-mdb-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+      >
+      <i class="fas fa-bars"></i>
+      </button>
+    </div>
+
     <div class="col-12">
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <!-- Left hand icons -->
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
             <a class="nav-link mx-2" href="{{ url_for('sports') }}">Sports</a>
@@ -27,12 +49,13 @@
             <a class="nav-link mx-2" href="#!">Posts</a>
           </li>
         </ul>
-        <ul class="navbar-nav align-items-center me-auto">
+        <!-- Right hand icons -->
+        <ul class="navbar-nav me-auto nav-flex-icons">
           {% if current_user.is_authenticated %}
           <li class="nav-item dropdown mx-2">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
               data-mdb-toggle="dropdown" aria-expanded="false">
-              {{ current_user.username }}
+              <i class="fa-regular fa-user"></i> {{ current_user.username }}
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               <li>
@@ -45,7 +68,10 @@
               {% endif %}
               {% if "staff" in current_user.get_permissions() %}
               <li>
-                <a class="dropdown-item" href="{{ url_for('track') }}">Track</a>
+                <a class="dropdown-item" href="{{ url_for('track_section') }}">Track Section</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('track_sport') }}">Track Sport</a>
               </li>
               {% endif %}
             </ul>
@@ -53,11 +79,11 @@
           {% endif %}
           {% if current_user.is_anonymous %}
           <li class="nav-item">
-            <a class="nav-link mx-2" href="{{ url_for('login') }}"><i class="fa-regular fa-user"></i> Login/Register</a>
+            <a class="nav-link mx-2" href="{{ url_for('login') }}">Login/Register</a>
           </li>
           {% else %}
           <li class="nav-item">
-            <a class="nav-link mx-2" href="{{ url_for('logout') }}"><i class="fa-regular fa-user"></i> Logout</a>
+            <a class="nav-link mx-2" href="{{ url_for('logout') }}">Logout</a>
           </li>
           {% endif %}
         </ul>

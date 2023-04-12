@@ -3,7 +3,8 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, TextAreaField, SubmitField, EmailField, FieldList, MultipleFileField, IntegerField, SelectField, URLField, HiddenField
 from wtforms.validators import DataRequired, Email, EqualTo, Length, ValidationError
-from app.models import User
+from app.models import User, Sport
+from app import app, db
 
 class LoginForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
@@ -74,6 +75,12 @@ class AddSportForm(FlaskForm):
 class TrackStudentForm(FlaskForm):
     platoon = SelectField("Platoon", choices=["5", "6", "7", "8", "9", "10", "11", "12"], validators=[DataRequired()])
     section = SelectField("Section", choices=["1", "2", "3", "4"], validators=[DataRequired()])
+    submit = SubmitField("Search")
+
+class TrackSportForm(FlaskForm):
+    with app.app_context():
+        sports = [sport.name.capitalize() for sport in Sport.query.all()]
+    sport = SelectField("Sport", choices=sports, validators=[DataRequired()])
     submit = SubmitField("Search")
 
 class StudentAttendanceForm(FlaskForm):
