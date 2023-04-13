@@ -3,33 +3,24 @@
 {% block content %}
 <div class="container">
     <div class="row justify-content-center mt-3">
-        <div class="col-md-5">
-            <div class="card" >
+        <div class="col-md-3">
+            <div class="card text-center">
                 <div class="card-header">Search Section</div>
                 <div class="card-body">
                     <form action="{{ url_for('track_section_search')}}" method="POST">
                         {{ form.hidden_tag() }}
-                        <div class="row">
-                            <div class="col-md-4">
-                                {{ form.platoon.label(class="form-label") }}
-                                {{ form.platoon(class="form-select") }}
-                                {% for error in form.platoon.errors %}
-                                <span style="color: red;">[{{ error }}]</span>
-                                {% endfor %}
-                            </div>
-                            <div class="col-md-4">
-                                {{ form.section.label(class="form-label") }}
-                                {{ form.section(class="form-select") }}
-                                {% for error in form.section.errors %}
-                                <span style="color: red;">[{{ error }}]</span>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-md-4">
-                                {{ form.submit(class="btn btn-dark") }}
-                            </div>
-                        </div>
+                        {{ form.platoon.label(class="form-label") }}
+                        {{ form.platoon(class="form-select") }}
+                        {% for error in form.platoon.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                        {% endfor %}
+                        {{ form.section.label(class="form-label") }}
+                        {{ form.section(class="form-select") }}
+                        {% for error in form.section.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                        {% endfor %}
+                        <br>
+                        {{ form.submit(class="btn btn-dark") }}
                     </form>
                 </div>
             </div>

@@ -21,6 +21,7 @@ class User(UserMixin, db.Model):
     sign_up_timestamp = db.Column(db.DateTime, index=True)
     attended_sport = db.Column(db.Boolean, default=False)
     nominal_submitted = db.Column(db.Boolean, default=False)
+    profile_photo_id = db.Column(db.Integer)
 
     roles = db.relationship("Role", secondary="user_roles")
     posts = db.relationship("Post", backref="author", lazy="dynamic")
@@ -93,15 +94,6 @@ class UserRoles(db.Model):
     role_id = db.Column(db.Integer(), db.ForeignKey('roles.id', ondelete='CASCADE'))
 
 
-class Post(db.Model):
-    __tablename__ = "posts"
-
-    id = db.Column(db.Integer, primary_key=True)
-    body = db.Column(db.String(140))
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-
-
 class Sport(db.Model):
     __tablename__ = "sports"
 
@@ -123,8 +115,35 @@ class Sport(db.Model):
     def get_user_sign_ups(self):
         user_sign_ups = User.query.filter_by(sport_id=self.id).all()
         return len(user_sign_ups)
-        
-        
+    
+
+class Post(db.Model):
+    __tablename__ = "posts"
+
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.String(140))
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+
+
+class File(db.Model):
+    __tablename__ = "files"
+
+    id = db.Column(db.Integer, primary_key=True)
+    original_filename = db.Column(db.String(100))
+    filename = db.Column(db.String(100))
+    bucket = db.Column(db.String(100))
+    region = db.Column(db.String(100))
+
+
+# class SportsPhotos(db.Model):
+#     __tablename__ = "sports_photos"
+
+#     id = db.Column(db.Integer(), primary_key=True)
+#     sport_id = db.Column(db.Integer(), db.ForeignKey('sports.id', ondelete='CASCADE'))
+#     file_id = db.Column(db.Integer(), db.ForeignKey('files.id', ondelete='CASCADE'))
+
+
 # Keep track of logged in user
 @login.user_loader
 def load_user(id):

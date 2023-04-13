@@ -1,12 +1,14 @@
 from flask import render_template, url_for, flash, redirect, request, session
 from sqlalchemy import desc, asc
 from app import app, db
+from app.models import User, UserRoles, Role, Post, Sport, File
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, EditSportPageForm, SearchUserForm, EditUserRolesForm, AddSportForm, TrackStudentForm, StudentAttendanceForm, TrackSportForm
 # Login
 from flask_login import current_user, login_user, logout_user, login_required
-from app.models import User, UserRoles, Role, Post, Sport
 # Next page
 from werkzeug.urls import url_parse
+# Upload files
+from upload_files import upload_profile_photo, delete_profile_photo, allowed_file, PROFILE_PHOTO_BUCKET_NAME
 # Roles
 import flask_authorization
 
@@ -82,7 +84,17 @@ def register():
 @app.route("/user/<username>", methods=["GET", "POST"])
 @login_required
 def profile(username):
+    # Restrict viewing other profiles to staff
+    if not current_user.get_permissions() and username != current_user.username:
+        flash("You are not permitted to view other profiles.")
+        return redirect(url_for('home'))
+    
     user = User.query.filter_by(username=username).first_or_404()
+    if user.profile_photo_id:
+        file = File.query.filter_by(id=user.profile_photo_id).first()
+        profile_photo = f"https://{PROFILE_PHOTO_BUCKET_NAME}.s3.amazonaws.com/{file.filename}"
+    else:
+        profile_photo = None
     # Prepopulate form with user's current data
     user_data = {
         "First Name": user.first_name,
@@ -96,10 +108,30 @@ def profile(username):
     if form.validate_on_submit():
         # Automatically update the user object with the submitted form data
         form.populate_obj(user)
-        db.session.commit()
+        profile_photo = request.files["profile_photo"]
+        # Check if photo is valid
+        if profile_photo and not allowed_file(profile_photo.filename):
+            flash("Please upload using the correct file type (jpg, jpeg, png)")
+            return redirect(url_for("profile", username=user.username))
+        # Delete user profile photo if it exists
+        if profile_photo and user.profile_photo_id is not None:
+            try:
+                file = File.query.filter_by(id=user.profile_photo_id).first()
+                # Delete photo from S3 bucket
+                delete_profile_photo(file.id)
+                # Delete photo from database
+                db.session.delete(file)
+                db.session.commit()
+            except AttributeError:
+                pass
+        if profile_photo:
+            upload_profile_photo(user=user, profile_photo=profile_photo)
+            db.session.commit()
+            return redirect(url_for('profile', username=current_user.username))
         flash("Changes have been made successfully.")
+        db.session.commit()
         return redirect(url_for("profile", username=user.username))
-    return render_template("profile.html", title="Profile", form=form, user=user, user_data=user_data)
+    return render_template("profile.html", title="Profile", form=form, user=user, user_data=user_data, profile_photo=profile_photo)
 
 # ------------------------------------------ #
 # ------------------ Admin ----------------- #
@@ -213,6 +245,9 @@ def track_section_search():
 def track_sport():
     form = TrackSportForm()
     attendance_form = StudentAttendanceForm()
+    if attendance_form.validate_on_submit():
+        flash("Please search for a sport first.")
+        return redirect(url_for('track_sport'))
     return render_template("admin/track_sport.html", form=form, attendance_form=attendance_form)
 
 

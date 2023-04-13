@@ -17,7 +17,7 @@ app = Flask(__name__)
 app.config.from_object(Config)
 # Database
 db = SQLAlchemy(app)
-migrate = Migrate(app, db)
+migrate = Migrate(app, db, render_as_batch=True)
 # Login
 login = LoginManager(app)
 # Send user to login page if page requires login
