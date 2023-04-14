@@ -1,67 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta http-equiv="x-ua-compatible" content="ie=edge" />
 
-    {% if title %}
-        <title>{{ title }}</title>
-    {% else %}
-        <title>Sports Tracker</title>
-    {% endif %}
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
 
-    <!-- MDB icon -->
-    <link rel="icon" href="img/mdb-favicon.ico" type="image/x-icon" />
-    <!-- Font Awesome -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    />
-    <!-- Google Fonts Roboto -->
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap"
-    />
-    <!-- Montserrat & Roboto-->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+  {% if title %}
+  <title>{{ title }}</title>
+  {% else %}
+  <title>Sports Tracker</title>
+  {% endif %}
+
+  <!-- MDB icon -->
+  <link rel="icon" href="img/mdb-favicon.ico" type="image/x-icon" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <!-- Google Fonts Roboto -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" />
+  <!-- Montserrat & Roboto-->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Roboto+Slab:wght@700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Roboto+Slab:wght@700&display=swap"
+    rel="stylesheet">
 
 
-    <!-- MDB -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/mdb.rtl.min.css') }}" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+  <!-- MDB -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/mdb.rtl.min.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
 
-  </head>
-  <body style="background-color: #253846;">
-    <!-- Start your project here-->
-    {% if request.path.startswith('/admin') %}
-    {% include "admin/admin_navbar.html" %}
-    {% else %}
-    {% include "navbar.html" %}
-    {% endif %}
+</head>
 
-    <div class="container">
-      {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        {% for message in messages %}
-          <div class="alert alert-warning" role="alert" style="margin-bottom:0px;">
-            {{ message }}
-          </div>
-          {% endfor %}
-        {% endif %}
-      {% endwith %}
+<body style="background-color: #253846;">
+  <!-- Start your project here-->
+  {% if request.path.startswith('/admin') %}
+  {% include "admin/admin_navbar.html" %}
+  {% else %}
+  {% include "navbar.html" %}
+  {% endif %}
+
+  <div class="container">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-warning" role="alert" style="margin-bottom:0px;">
+      {{ message }}
     </div>
-    
-    {% block content %}{% endblock %}
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+  </div>
 
-    {% include "footer.html" %}
-    <!-- End your project here-->
+  {% block content %}{% endblock %}
 
-    <!-- MDB -->
-    <script type="text/javascript" src="{{ url_for('static', filename='js/mdb.min.js') }}"></script>
-    <!-- Custom scripts -->
-    <script type="text/javascript"></script>
-  </body>
+  {% include "footer.html" %}
+  <!-- End your project here-->
+
+  <!-- MDB -->
+  <script type="text/javascript" src="{{ url_for('static', filename='js/mdb.min.js') }}"></script>
+  <!-- Custom scripts -->
+  <script type="text/javascript"></script>
+</body>
+
 </html>

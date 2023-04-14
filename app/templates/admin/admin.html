@@ -1,5 +1,72 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="container text-white">
+    
+    <div class="row m-2">
+        <h1>Admin Dashboard</h1>
+        {% for title, stat in stats.items() %}
+        <div class="col-md-2 text-black">
+            <div class="card">
+                <div class="card-header text-center">
+                    {{ title }}:
+                </div>
+                <div class="card-body text-center">
+                    <h3 class="card-title">{{ stat }}</h3>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="row m-2">
+        <h2>Sport Details</h2>
+        {% for sport in sports %}
+        <div class="col-md-3 text-black">
+            <div class="card">
+                <div class="card-header text-center">
+                    {{ sport.name.capitalize() }}:
+                </div>
+                <div class="card-body">
+                    <p class="card-title">Sport OIC: {{ sport.sport_oic }}</p>
+                    <p class="card-title">Capacity: {{ sport.get_user_sign_ups() }}/{{ sport.capacity }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
 
+
+</div>
+
+<div class="container">
+    <div>
+        <canvas id="myChart"></canvas>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- <script>
+    const ctx = document.getElementById('myChart');
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            datasets: [{
+                label: '# of Votes',
+                data: [12, 19, 3, 5, 2, 3],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script> -->
 {% endblock %}

@@ -8,7 +8,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 # Next page
 from werkzeug.urls import url_parse
 # Upload files
-from upload_files import upload_profile_photo, delete_profile_photo, allowed_file, PROFILE_PHOTO_BUCKET_NAME
+from upload_files import upload_profile_photo, delete_profile_photo, allowed_file
 # Roles
 import flask_authorization
 
@@ -90,11 +90,8 @@ def profile(username):
         return redirect(url_for('home'))
     
     user = User.query.filter_by(username=username).first_or_404()
-    if user.profile_photo_id:
-        file = File.query.filter_by(id=user.profile_photo_id).first()
-        profile_photo = f"https://{PROFILE_PHOTO_BUCKET_NAME}.s3.amazonaws.com/{file.filename}"
-    else:
-        profile_photo = None
+    profile_photo = user.profile_photo()
+
     # Prepopulate form with user's current data
     user_data = {
         "First Name": user.first_name,
@@ -105,6 +102,7 @@ def profile(username):
         "Section": user.section,
     }
     form = EditProfileForm(obj=user)
+
     if form.validate_on_submit():
         # Automatically update the user object with the submitted form data
         form.populate_obj(user)
@@ -140,7 +138,15 @@ def profile(username):
 @login_required
 @flask_authorization.permission_required(["admin"])
 def admin():
-    return render_template("admin/admin.html", title="Admin Page")
+    total_students = User.query.join(UserRoles, User.id==UserRoles.user_id,isouter=True).where(UserRoles.user_id.is_(None)).count()
+    total_signups = User.query.filter(User.sport_id != None).count()
+    sports = Sport.query.all()
+    stats = {
+        "Total Students": total_students,
+        "Total Sports": Sport.query.count(),
+        "Total Sign-ups": f"{total_signups}/{total_students}"
+    }
+    return render_template("admin/admin.html", title="Admin Page", stats=stats, sports=sports)
 
 
 # Edit user roles - Admin, Sports OIC, Staff
@@ -257,13 +263,14 @@ def track_sport():
 def track_sport_search():
     form = TrackSportForm()
     attendance_form = StudentAttendanceForm()
+
     if form.submit.data and form.validate_on_submit():
         sport = Sport.query.filter_by(name=form.sport.data.lower()).first()
         users = User.query.filter_by(sport_id=sport.id).all()
         session["sport"] = sport.id
+
     if attendance_form.submit_attended.data and attendance_form.validate_on_submit():
         users = User.query.filter_by(sport_id=session["sport"]).all()
-        flash("Nominal roll submitted.")
         students_attended = request.form.getlist('attended')
         for user in users:
             user.nominal_submitted = True
@@ -272,7 +279,9 @@ def track_sport_search():
             else:
                 user.attended_sport = False
         db.session.commit()
+        flash("Nominal roll submitted.")
         return redirect(url_for('track_sport'))
+    
     return render_template("admin/track_sport.html", form=form, attendance_form=attendance_form, users=users)
 
 

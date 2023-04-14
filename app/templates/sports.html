@@ -2,28 +2,36 @@
 
 {% block content %}
 <div class="container mt-3">
-    <h1 style="color: white;">Sports Directory</h1>
+    <h1 style="color: white; margin-left: 10px;">Sports Directory</h1>
     {% if sports %}
     <div class="row">
         {% for sport in sports %}
-            <div class="col-md-3">
-                <div class="card mx-2 my-2">
-                    <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-                        <img src="{{ sport.img_src }}" class="img-fluid" style="width:100%;height:20vw;object-fit:cover;"/>
-                        <a href="{{ url_for('sport_page', name=sport.name) }}">
-                            <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-                        </a>
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">{{ sport.name.capitalize() }}</h5>
-                        <p class="card-text">{{ sport.description }}</p>
-                        <a href="{{ url_for('sport_page', name=sport.name) }}" class="btn btn-primary">More</a>
-                    </div>
+        <div class="col-md-3">
+            <div class="card mx-2 my-2 d-none d-md-block">
+                <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                    <img src="{{ sport.img_src }}" class="img-fluid" style="width:100%; height:15vw; object-fit:cover;" />
+                    <a href="{{ url_for('sport_page', name=sport.name) }}">
+                        <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                    </a>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ sport.name.capitalize() }}</h5>
+                    <p class="card-text">{{ sport.description }}</p>
+                    <a href="{{ url_for('sport_page', name=sport.name) }}" class="btn btn-primary">More</a>
                 </div>
             </div>
+            <ul class="d-md-none">
+                <li>
+                    <h4>
+                        <a style="color:white;" href="{{ url_for('sport_page', name=sport.name) }}">{{ sport.name.capitalize() }}</a>
+                    </h4>
+                </li>
+            </ul>
+
+        </div>
         {% endfor %}
     </div>
-        
+
     {% endif %}
 </div>
 

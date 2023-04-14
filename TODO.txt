@@ -1,10 +1,1 @@
-Create admin page
-- Create/Delete a sport
-- Add roles to users: Admin, Sports OIC, Staff
-- Data analytics page
-
-Create sports oic page
-- Create/edit/delete posts
-- Create/edit/delete news
-- Upload photos to gallery
-- See nominal roll of user signups
+Add global variables to CONFIG file
