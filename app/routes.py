@@ -2,9 +2,12 @@ from flask import render_template, url_for, flash, redirect, request, session
 from sqlalchemy import desc, asc
 from app import app, db
 from app.models import User, UserRoles, Role, Post, Sport, File
-from app.forms import LoginForm, RegistrationForm, EditProfileForm, EditSportPageForm, SearchUserForm, EditUserRolesForm, AddSportForm, TrackStudentForm, StudentAttendanceForm, TrackSportForm
+from app.forms import LoginForm, RegistrationForm, EditProfileForm, EditSportPageForm, SearchUserForm, EditUserRolesForm,\
+      AddSportForm, TrackStudentForm, StudentAttendanceForm, TrackSportForm, RequestPasswordResetForm, ResetPasswordForm
 # Login
 from flask_login import current_user, login_user, logout_user, login_required
+# Password reset
+from app.email import send_password_reset_email
 # Next page
 from werkzeug.urls import url_parse
 # Upload files
@@ -77,6 +80,36 @@ def register():
         flash("Hi {}.You have successfully registered! Please update your details below.".format(user.username))
         return(redirect(url_for("profile", username=user.username)))
     return render_template("auth/registration.html", title="Register", form=form)
+
+
+@app.route('/reset_password_request', methods=['GET', 'POST'])
+def reset_password_request():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    form = RequestPasswordResetForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user:
+            send_password_reset_email(user)
+        flash('Check your email for the instructions to reset your password')
+        return redirect(url_for('login'))
+    return render_template('auth/request_password_reset.html', title='Reset Password', form=form)
+
+
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    user = User.verify_reset_password_token(token)
+    if not user:
+        return redirect(url_for('home'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        user.set_password(form.password.data)
+        db.session.commit()
+        flash('Your password has been reset.')
+        return redirect(url_for('login'))
+    return render_template('auth/reset_password.html', form=form)
 
 # ------------------------------------------ #
 # ------------------ User ------------------ #

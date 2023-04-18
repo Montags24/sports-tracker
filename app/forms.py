@@ -99,3 +99,13 @@ class StudentAttendanceForm(FlaskForm):
     user_id = HiddenField("user_id")
     attended_sport = BooleanField("Attended")
     submit_attended = SubmitField("Submit")
+
+class RequestPasswordResetForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Submit')
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField('Password', validators=[DataRequired()])
+    password2 = PasswordField(
+        'Repeat Password', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Request Password Reset')

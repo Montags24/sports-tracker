@@ -11,6 +11,8 @@ from logging.handlers import SMTPHandler, RotatingFileHandler
 import os
 # Auth
 from flask_authorization import Authorize
+# Reset pasword
+from flask_mail import Mail
 
 
 app = Flask(__name__)
@@ -25,6 +27,8 @@ login.login_view = "login"
 # Initialize Extension
 authorize = Authorize()
 authorize.init_app(app)
+
+mail = Mail(app)
 
 from app import routes, models, errors
 
