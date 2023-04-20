@@ -138,6 +138,17 @@ class Sport(db.Model):
         user_sign_ups = User.query.filter_by(sport_id=self.id).all()
         return len(user_sign_ups)
     
+    def remove_users_lower_capacity(self, new_capacity):
+        if new_capacity < self.capacity:
+            # get amount of users, sort by timestamp
+            users = User.query.filter_by(sport_id=self.id).order_by(User.sign_up_timestamp.asc()).all()
+            # check if amount of users is over new capacity
+            if len(users) > new_capacity:
+                for user in users[:new_capacity-1:-1]:
+                    user.sport_id = None
+                    user.sign_up_timestamp = None
+                    db.session.commit()
+    
 
 class Post(db.Model):
     __tablename__ = "posts"

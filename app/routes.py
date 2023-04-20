@@ -334,6 +334,8 @@ def sport_page(name):
     form = EditSportPageForm(obj=sport)
     users = User.query.filter_by(sport_id=sport.id).all()
     if form.submit.data and form.validate_on_submit():
+        # Remove last users that signed up if capacity changes
+        sport.remove_users_lower_capacity(new_capacity=form.capacity.data)
         form.populate_obj(sport)
         db.session.commit()
         flash("Changes have been made successfully.")
